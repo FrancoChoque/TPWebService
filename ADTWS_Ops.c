@@ -19,6 +19,7 @@ int ADTWS_Ops_create(int argc, char** argv, ADTWS_Ops* op){
 		return st;
 	}	
 	
+	ADTWS_Ops_set_operation(op,argv,argc);
 
 
 
@@ -56,6 +57,8 @@ int ADTWS_Ops_set_request(AOTWS_Ops* op,char** arr,int arr_size){
 int ADTWS_Ops_get_operation(AOTWS_Ops* Op){
 
 	unsigned int i;
+	char* operation_name;
+
 
 	if(op == NULL){
 		return ERROR_NULL_POINTER;
@@ -67,5 +70,14 @@ int ADTWS_Ops_get_operation(AOTWS_Ops* Op){
 	}
 
 
+
+}
+
+
+int ADTWS_Ops_parse_url(char* url, char* op_name){
+
+	for(i = 0; i < strlen(url); i++){
+
+	}
 
 }
