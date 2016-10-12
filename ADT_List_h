@@ -1,22 +1,9 @@
-#ifndef ADT_List__H__
-#define ADT_List__H__
 
-typedef struct node_t{
-	node_t* next;
-	void* data;
-}node_t;
-
-
-
-typedef struct{
-	node_t* first;
-	int clientc; /*El enunciado dice que la lista tiene que tener la cantidad total de clients*/
-}list_t;
-
-
-
-int ADT_List_add(void*);
-int ADT_List_delete(void*)
-
-
-#endif
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   ADT_List_h
+#

@@ -1,7 +1,7 @@
 #ifndef ADT_Clientes__H__
 #define ADT_Clientes__H__
 
-#define STR_LEN 20;
+#define STR_LEN 21;
 
 
 typedef struct{
