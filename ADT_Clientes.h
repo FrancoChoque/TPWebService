@@ -1,7 +1,15 @@
-#ifndef ADT_Clientes__H__
-#define ADT_Clientes__H__
+#ifndef ADT_Client__H__
+#define ADT_Client__H__
+
+
+#include <stdio.h>
+#include "errors.h"
 
 #define STR_LEN 21;
+
+
+typedef (modifier_t*)(client_t*,void* data);
+
 
 
 typedef struct{
@@ -11,7 +19,17 @@ typedef struct{
 	char telephone[STR_LEN];
 	char mail[STR_LEN];
 	char date[STR_LEN];
-}ADT_Cliente;	
-	
+}client_t;	
 
+
+typedef struct{
+	client_t* client;
+	void* data;
+	modifier_t data_type;
+}ADT_Client_t;
+
+
+int ADT_Client_create(ADT_Client*);
+int ADT_Client_destroy(ADT_Client*);	
+int ADT_Client_modify
 #endif

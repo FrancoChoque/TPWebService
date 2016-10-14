@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ADTWS_ops_h"
+#include "ADTWS_Ops_h"
 #include "ADTWS_h"
+#include "errors.h"
 
 
 
@@ -11,8 +12,8 @@ int main(int argc, char* argv[]){
 
 	int st;
 
-	ADTWS_Ops operation;
-	ADTWS web_service;
+	ADTWS_Ops* operation;
+	ADTWS* web_service;
 
 	
 	if((st = validate_arguments(argc,argv))!= OK){
@@ -21,16 +22,28 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	if((st = ADTWS_Ops_create(argc,argv,&operation))!= OK){
+	if((st = ADTWS_create(web_service))!= OK){
 		log_error(st);
 		return EXIT_FAILURE;
 	}
 
-	
+	if((st = ADTWS_Ops_create(argc,argv,operation))!= OK){
+		ADTWS_destroy(web_service);
+		log_error(st);
+		return EXIT_FAILURE;
+	}
+
+	if((st = execute_operation(operation,web_service))!= OK){
+		log_error(st);
+		ADTWS_destroy(web_service);
+		ADTWS_Ops_destroy(operation);
+		return EXIT_FAILURE;
+	}
+
+	ADTWS_destroy(web_service);
+	ADTWS_Ops_destroy(operation);
+
 	return OK;
-
-
-
 }
 
 
@@ -51,14 +64,22 @@ int validate_arguments(int argc, char** argv){
 
 
 
+int execute_operation(ADTWS* web_service, ADTWS_Ops* operation){
 
+	if(web_service == NULL || operation == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+
+	return OK;
+}
 
 
 
 /*Estas funciones que son genéricas las pondría en una biblioteca aparte tipo utils.h (utilities) o algo así*/
 
 
-char* strdup(char* s){
+char* strdup(char* s){ /*Copia string*/
 
 	char* d;
 
@@ -75,7 +96,7 @@ char* strdup(char* s){
 
 
 
-int concat_str_array(int len, char** arr, char* dest){
+int concat_str_array(int len, char** arr, char* dest){ /*devuelve por dest el request del ADTWS_Ops*/
 
 	
 	char* aux;

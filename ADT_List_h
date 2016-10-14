@@ -3,7 +3,31 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "errors.h"
 
+
+
+typedef int (destroyer_t*)(void*); 
+
+typedef struct node_t{
+	node_t* next;
+	void* data;
+}node_t;
+
+typedef struct{
+	node_t* first,current;
+	unsigned int node_counter;
+	destroyer_t destroyer;
+}list_t;
+
+
+
+int create_list (list_t*);
+int add_node (list_t*, void*);
+int empty_list (list_t*);
+int destroy_list(list_t*);
+int is_empty(list_t*);
+int move_current(list_t*);
 
 #endif
 

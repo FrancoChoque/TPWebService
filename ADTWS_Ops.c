@@ -28,7 +28,7 @@ int ADTWS_Ops_create(int argc, char** argv, ADTWS_Ops* op){
 }
 
 
-int ADTWS_Ops_set_request(AOTWS_Ops* op,char** arr,int arr_size){
+int ADTWS_Ops_set_request(AOTWS_Ops* op, char** arr,int arr_len){
 
 	int st;
 	char* request;
@@ -38,7 +38,7 @@ int ADTWS_Ops_set_request(AOTWS_Ops* op,char** arr,int arr_size){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((st = concat_args(argc,argv,request))!= OK){
+	if((st = concat_args(arr_len,arr,request))!= OK){
 		return st;
 	}
 	
