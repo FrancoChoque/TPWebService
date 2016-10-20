@@ -5,7 +5,7 @@
 #include "utils.h"
 
 
-char* strdup(char* s){ /*Copia string*/
+char* strdup(const char* s){ /*Copia string*/
 
 	char* d;
 
@@ -22,7 +22,7 @@ char* strdup(char* s){ /*Copia string*/
 
 
 
-int concat_str_array(int len, char** arr, char* dest){ /*Copia en un string dest, el arreglo de strings arr.
+int concat_str_array(int len, const char** arr, char* dest){ /*Copia en un string dest, el arreglo de strings arr.
 				 										En este caso, el request del ADTWS_Ops*/
 
 	char* aux;

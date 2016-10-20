@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 int concat_str_array(int, char**, char*);
-char* strdup(char*);
+char* strdup(const char*);
 
 
 #endif

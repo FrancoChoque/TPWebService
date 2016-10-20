@@ -29,7 +29,7 @@ typedef struct{
 }ADT_Client_t;
 
 
-int ADT_Client_create(ADT_Client*);
-int ADT_Client_destroy(ADT_Client*);	
-int ADT_Client_modify
+int ADT_Client_create(ADT_Client_t*);
+int ADT_Client_destroy(ADT_Client_t*);	
+
 #endif

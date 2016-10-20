@@ -11,7 +11,7 @@ typedef struct{
 	ADTWS_Ops current_op;
 	list_t all_operations;
 	list_t clients;
-	queue_t execution_quuee;
+	queue_t execution_queue;
 }ADTWS;
 
 

@@ -8,6 +8,8 @@
 
 
 typedef int (destroyer_t*)(void*); 
+typedef int (copy_t*)(void*, void*); 
+
 
 typedef struct node_t{
 	node_t* next;
@@ -16,8 +18,9 @@ typedef struct node_t{
 
 typedef struct{
 	node_t* first,current;
-	unsigned int node_counter;
+	unsigned int node_counter, node_size;
 	destroyer_t destroyer;
+	copy_t copy;
 }list_t;
 
 
