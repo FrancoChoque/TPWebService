@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include "errors.h"
 
-#define STR_LEN 21;
+#define STR_LEN 20;
 
 
 typedef (modifier_t*)(client_t*,void* data);
-
+typedef (comparator_t*)(void*,void*);
 
 
 typedef struct{
@@ -22,14 +22,11 @@ typedef struct{
 }client_t;	
 
 
-typedef struct{
-	client_t* client;
-	void* data;
-	modifier_t data_type;
-}ADT_Client_t;
 
 
-int ADT_Client_create(ADT_Client_t*);
-int ADT_Client_destroy(ADT_Client_t*);	
+int add_client()
+
+int compare_by_id(void*,void*);
+int modify_x(client_t*,void*);
 
 #endif

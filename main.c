@@ -5,6 +5,7 @@
 #include "errors.h"
 
 
+char config_file[] = "SERVERTP1GRUPAL.conf";
 
 
 
@@ -22,21 +23,22 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	if((st = ADTWS_create(web_service))!= OK){
+	
+	if((st = ADTWS_Ops_create(argc,argv,operation))!= OK){		
 		log_error(st);
 		return EXIT_FAILURE;
 	}
 
-	if((st = ADTWS_Ops_create(argc,argv,operation))!= OK){
-		ADTWS_destroy(web_service);
+	if((st = ADTWS_create(web_service))!= OK){
+		ADTWS_Ops_destroy(operation);
 		log_error(st);
 		return EXIT_FAILURE;
 	}
 
 	if((st = execute_operation(operation,web_service))!= OK){
 		log_error(st);
-		ADTWS_destroy(web_service);
 		ADTWS_Ops_destroy(operation);
+		ADTWS_destroy(web_service);
 		return EXIT_FAILURE;
 	}
 
@@ -70,6 +72,7 @@ int execute_operation(ADTWS* web_service, ADTWS_Ops* operation){
 		return ERROR_NULL_POINTER;
 	}
 
+	ADTWS_consume(operation,web_service);
 	
 
 

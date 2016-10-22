@@ -8,9 +8,9 @@
 
 
 typedef struct{
-	ADTWS_Ops current_op;
-	list_t all_operations;
-	list_t clients;
+	ADTWS_Ops operation_t;
+	list_t operation_list;
+	list_t client_list;
 	queue_t execution_queue;
 }ADTWS;
 
