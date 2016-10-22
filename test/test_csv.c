@@ -29,58 +29,55 @@ void print_client(client_t*);
 
 int main(void){
 
-	FILE* fp;
-	client_t client;
-	char str[STR_LEN * 7];
-	char *temp, **values;
-	int fields;
+		FILE* fp;
+		client_t client;
+		char str[STR_LEN * 7];
+		char *temp, **fieldv;
+		int fieldc;
 
 
-	fp = fopen("csv","rt");
+		fp = fopen("csv","rt");
 
-	while(!feof(fp)){
+		printf("%d\n",(int)strlen(str));
 
-		if((fgets(str,STR_LEN * 7,fp)) == NULL) break;
-		split(str,&values,&fields);
-		client.client_id = (int) strtoul(values[FIELD_CLIENT_ID],&temp,10);
-		strcpy(client.name,values[FIELD_CLIENT_NAME]);
-		strcpy(client.surname,values[FIELD_CLIENT_SURNAME]);
-		strcpy(client.telephone,values[FIELD_CLIENT_PHONE]);
-		strcpy(client.mail,values[FIELD_CLIENT_MAIL]);
-		strcpy(client.date,values[FIELD_CLIENT_DATE]);
-		print_client(&client);
-	}
+		while(!feof(fp)){
 
-
-
-
+			if((fgets(str,STR_LEN*7	,fp)) == NULL) break;
+			split(str,&fieldv,&fieldc);
+			client.client_id = (int) strtoul(fieldv[FIELD_CLIENT_ID],&temp,10);
+			strcpy(client.name,fieldv[FIELD_CLIENT_NAME]);
+			strcpy(client.surname,fieldv[FIELD_CLIENT_SURNAME]);
+			strcpy(client.telephone,fieldv[FIELD_CLIENT_PHONE]);
+			strcpy(client.mail,fieldv[FIELD_CLIENT_MAIL]);
+			strcpy(client.date,fieldv[FIELD_CLIENT_DATE]);
+			print_client(&client);
+		}
 	
-
 	return 0;
 }
 
 
-int split(char* str, char*** values, int* fields){
+int split(char* str, char*** fieldv, int* fieldc){
 
 	char *p, *q;
 	int i;
 	char dels[] = {DELIM, '\0'};
 
 	
-	(*fields) = 0;
+	(*fieldc) = 0;
 	
 	for(i = 0; str[i]!= '\0'; i++){
 		if(str[i] == DELIM){
-			(*fields)++;
+			(*fieldc)++;
 		}
 	}
 	
-	(*fields)++;
+	(*fieldc)++;
 
-	(*values) = (char**) malloc ((*fields) * sizeof(char*));
+	(*fieldv) = (char**) malloc ((*fieldc) * sizeof(char*));
 
 	for(q = str, i = 0; (p = strtok(q,dels))!= NULL; q = NULL, i++){
-		(*values)[i] = strdup(p);
+		(*fieldv)[i] = strdup(p);
 		
 	}
 

@@ -1,10 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "errors.h"
 #include "ADT_List.h"
 
 
-int ADT_List_create (list_t* list, copy_t copy, destroyer_t destroyer){
+int ADT_List_create (list_t* list, copy_t copy, destroy_t destroy){
 
 	if(list == NULL){
 		return ERROR_NULL_POINTER;
@@ -13,7 +10,7 @@ int ADT_List_create (list_t* list, copy_t copy, destroyer_t destroyer){
 	list-> first = NULL;
 	list-> current = NULL;
 	list-> copy = copy;
-	list-> destroyer = destroyer;
+	list-> destroy = destroy;
 
 	return OK;
 }
@@ -49,7 +46,7 @@ int ADT_List_empty(list_t *list){
 	
 	for(current = list->first; current; current = next){
 		next = current->next;
-		st = lp->destroy(current->data);
+		list->destroy(current->data);
 		free(current->data);
 		free(current);
 	}
@@ -62,7 +59,7 @@ int ADT_List_empty(list_t *list){
 
 
 
-int ADT_List_is_empty (list_t list){
+int is_empty (list_t list){
 
 	return (list.first == NULL);
 }
@@ -93,26 +90,27 @@ int move_current(list_t* list, movement_t M){
 
 	switch(M){
 
-		case first:
+		case mov_first:
 			list->current = list->first;
 		break;
 
-		case next:
+		case mov_next:
 			if (list->current->next == NULL)
-				return FALSE;
+				return ERROR_INVALID_MOVEMENT;
 			else
 				list->current = list->current->next;
 		break;
 
-		case previous: return FALSE; /*preguntar/arreglar*/
+		case mov_previous: return ERROR_INVALID_MOVEMENT; 
 	}
+	
 	return OK;
 }
 
 
 
 
-int delete_node(list_t *list){
+int ADT_List_delete_node(list_t *list){
 
 	node_t *aux, *aux2;
 
@@ -131,7 +129,7 @@ int delete_node(list_t *list){
 		
 		if(list->current->next != NULL){ /*Si no es el último*/
 			aux = list->current->next;
-			memcpy(pLs->Corriente->Elem, pNodo->Elem, pLs->TamanioDato);
+			memcpy(list->current->data, aux->data, list->data_size);
 			list->current->next = aux->next;
 		}
 
@@ -145,10 +143,7 @@ int delete_node(list_t *list){
 		}
 	}
 
-	list->destroyer(aux->data);
-	free(aux->data);
-	free(aux);
-	aux = NULL;
+	dispose_node(aux,list->destroy);
 
 	return OK;
 }
@@ -156,7 +151,7 @@ int delete_node(list_t *list){
 
 
 
-int add_node(list_t* list, movement_t M, void* adition){
+int ADT_List_insert_node(list_t* list, movement_t M, void* adition){
 
 
 	int st;
@@ -167,24 +162,10 @@ int add_node(list_t* list, movement_t M, void* adition){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((aux = (node_t*) malloc(sizeof(node_t))) == NULL){
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	if((aux->data = (void*) malloc(list->data_size)) == NULL){
-		free(aux);
-		aux = NULL;
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	
-	if((st = list->copy(aux->data, adition))!= OK){
-		free(aux->data);
-		free(aux);
-		aux = NULL;
+	if((st = build_node(aux,list->data_size,adition,list->copy))!= OK){
 		return st;
-	}	
-	
+	}
+
 	if((is_empty(list)) || (M == mov_first) || ((M == mov_previous) && (list->first == list->current))){
 		aux->next = list->first;
 		(list->first = list->current) = aux;
@@ -205,122 +186,88 @@ int add_node(list_t* list, movement_t M, void* adition){
 }
 
 
+int ADT_List_update(list_t* list, const void* data) {
+	
+	
+	void* new_data;
+	int st;
+
+
+	if(list == NULL || data == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+
+	if(list->first == NULL){
+		return ERROR_EMPTY_LIST; /* Lista vacía: No puedo actualizar */
+	}
+	
+	if((new_data = (void*) malloc(list->data_size)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+	
+	if((st = list->copy(new_data, data))!= OK){
+		free(new_data);
+		return st;
+	}
+
+	list->destroy(list->current->data);
+	free(list->current->data);
+	list->current->data = new_data;
+	
+	return OK;
+	
+}
+
+
 
 
 
 /* <private functions> */
-void dispose_node(straight_list_node_t * node, straight_list_destroy_t destroy) {
+void dispose_node(node_t*, destroy_t);
+int build_node(node_t*, size_t, const void*, copy_t);
+
+
+
+void dispose_node(node_t *node, destroy_t destroy){
+	
+	if(node == NULL) return;
 	destroy(node->data);
 	free(node->data);
 	free(node);
+	aux = NULL;
+	return;
 }
 
-straight_list_node_t * build_node(size_t size, const void* data, straight_list_copy_t copy) {
+
+int build_node(node_t* node, size_t size, const void* data, copy_t copy){
 	
-	straight_list_node_t *node = (straight_list_node_t*) malloc(sizeof(straight_list_node_t));
-	if (!node) { /* No hay memoria disponible */
-		return NULL;
-	}
-	
-	node->data = malloc (size);
-	if(!node->data) { /* No hay memoria disponible */
-		free(node);
-		return NULL;
+	int st;
+
+	if(node == NULL || data == NULL){
+		return ERROR_NULL_POINTER;
 	}
 
-	if(copy(node->data, data) != RES_OK) {
-		free(node->data);
-		free(node);
-		return NULL;
+	if((node = (node_t*) malloc(sizeof(node_t))) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
 	}
 	
-	return node;
+	if((node->data = (void*) malloc (size)) == NULL){
+		free(node);
+		node = NULL;
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	if((st = copy(node->data, data))!= OK){
+		free(node->data);
+		free(node);
+		return st;
+	}
+	
+	return OK;
 }
 /* </private functions> */
 
 
 
-
-
-
-
-
-void straight_list_delete(straight_list_t *lp)
-{
-	straight_list_node_t *current = lp->current;
-	if (lp->current==lp->first)
-	{
-		lp->first = lp->current->next;
-		lp->current = lp->first;
-	}
-	else
-	{
-		if(lp->current->next){
-			/* En este caso en que el corriente no es el ultimo, puedo evitarme
-			 * recorrer toda la lista buscando el anterior */
-			current=lp->current->next;
-			memcpy(lp->current->data, current->data, lp->size);
-			lp->current->next = current->next;
-		}else {
-			straight_list_node_t *aux = lp->first;
-			while (aux->next != lp->current) {
-				aux = aux->next;
-			}
-			aux->next=lp->current->next;
-			lp->current = aux; /*Si es el ultimo queda en el Anterior al borrado */
-		}
-	}
-
-	dispose_node(current, lp->destroy);
-}
-
-int straight_list_insert(straight_list_t *lp, straight_list_movement_t m, const void* data)
-{
-	straight_list_node_t *new_node = build_node(lp->size, data, lp->copy);
-	if(!new_node) return FALSE;
-	
-	if ((lp->first == NULL) || (m==straight_list_first) || ((m==straight_list_previous) && (lp->first==lp->current)))
-	{
-		/*Si esta vacia o hay que insertar en el Primero o
-		hay que insertar en el Anterior y el actual es el Primero */
-		new_node->next = lp->first;
-		lp->first = lp->current = new_node;
-	}
-	else
-	{
-		/* Siempre inserto como siguiente, el nodo nuevo, porque es más fácil */
-		new_node->next = lp->current->next;
-		lp->current->next = new_node;
-		if (m == straight_list_previous)
-		{
-			/* Pero cuando el movimiento es Anterior, entonces swapeo los elementos */
-			void* tmp = new_node->data;
-			new_node->data = lp->current->data;
-			lp->current->data = tmp;
-		}
-	}
-	lp->current=new_node;
-	return TRUE;
-}
-
-int straight_list_update(straight_list_t* l, const void* data) {
-	if(!l->first) {
-		return FALSE; /* Lista vacía: No puedo actualizar */
-	}
-	
-	void* new_data = malloc(l->size);
-	if(!new_data) {
-		return FALSE;
-	}
-	
-	if(l->copy(new_data, data) == RES_OK) {
-		l->destroy(l->current->data);
-		free(l->current->data);
-		l->current->data = new_data;
-		return TRUE;
-	} else {
-		free(new_data);
-		return FALSE;
-	}
-}
 

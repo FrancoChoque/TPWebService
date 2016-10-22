@@ -27,6 +27,6 @@ typedef struct{
 int add_client()
 
 int compare_by_id(void*,void*);
-int modify_x(client_t*,void*);
+
 
 #endif

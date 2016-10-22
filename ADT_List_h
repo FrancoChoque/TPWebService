@@ -4,17 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "errors.h"
+#include "utils.h"
 
 
 
 typedef int (*copy_t) (void*, const void*);
-typedef int (*destroyer_t) (void*);
+typedef int (*destroy_t) (void*);
 
 
 typedef enum{
-	list_first,
-	list_next,
-	list_previous
+	mov_first,
+	mov_next,
+	mov_previous
 }movement_t;
 
 
@@ -28,90 +29,21 @@ typedef struct node_t{
 typedef struct{
 	node_t *first, *current;
 	size_t data_size;
-	destroyer_t destroyer;
+	destroy_t destroyer;
 	copy_t copy;
 }list_t;
 
 
 
-int create_list (list_t*, int, copy_t, destroyer_t);
-int destroy_list(list_t*);
-int empty_list (list_t*);
-int is_empty(list_t*);
-int add_node (list_t*, movement_t,	 void*);
-int get_current_node(list_t, void*);
-int delete_node(list_t*);
-int move_current(list_t*);
+int ADT_List_create (list_t*, copy_t, destroy_t);
+int ADT_List_destroy (list_t*);
+int ADT_List_empty(list_t*);
+int ADT_List_get_node (list_t, void*);
+int ADT_List_delete_node(list_t*);
+int ADT_List_insert_node(list_t*, movement_t, void*);
+int ADT_List_update(list_t*, const void*);
 
+int is_empty (list_t);
+int move_current(list_t*, movement_t);
 #endif
 
-
-	
-	int straight_list_create(straight_list_t*, size_t, straight_list_copy_t, straight_list_destroy_t);
-
-	/**
-	 * DESTRUIR
-	 * Pre: Ls creada.
-	 * Post: Ls destruida. Todos los recursos utilizados liberados
-	 */
-	void straight_list_destroy(straight_list_t*);
-	
-	/**
-	 * VACIAR
-	 * Pre: Ls creada.
-	 * Post: Ls vacia.
-	 */
-	void straight_list_clear(straight_list_t*);
-	
-	/**
-	 * VACIA?
-	 * Pre: Ls creada.
-	 * Post: Si Ls tiene elementos devuelve FALSE sino TRUE.
-	 */
-	int straight_list_is_empty(const straight_list_t*);
-	
-	/**
-	 * OBTENER CORRIENTE
-	 * Pre: Ls creada y no vacia.
-	 * Post: Se devuelve en E el elemento Corriente de la lista.
-	 */
-	void straight_list_get(const straight_list_t*, void*);
-	
-	/**
-	 * MOVER
-	 * Pre: Ls creada y no vacia.
-	 * Post: Si Ls esta vacia, devuelve FALSE. Sino:
-	 * Si M = LS_Primero, el nuevo elemento Corriente es el Primero. Devuelve TRUE
-	 * Si M = LS_Siguiente, el nuevo elemento Corriente es el Siguiente al
-	 * Anterior. Si estaba en el ultimo elemento, devuelve FALSE, sino TRUE.
-	 * Si M = LS_Anterior, devuelve FALSE.
-	 */
-	int straight_list_move(straight_list_t*, straight_list_movement_t);
-	
-	/**
-	 * BORRAR
-	 * Pre: Ls creada y no vacia.
-	 * Post: Se elimino el elemento Corriente, El nuevo elemento es el Siguiente o
-	 * el Anterior si el Corriente era el ultimo elemento.
-	 */
-	void straight_list_delete(straight_list_t*);
-	
-	/**
-	 * INSERTAR (respecto al elemento corriente)
-	 * Pre: Ls creada.
-	 * Post: E se agrego a la lista y es el actual elemento Corriente.
-	 * Si M=LS_Primero: se inserto como Primero de la lista.
-	 * Si M=LS_Siguiente: se inserto despues del elemento Corriente.
-	 * Si M=LS_Anterior: se inserto antes del elemento Corriente.
-	 * Si pudo insertar el elemento devuelve TRUE, sino FALSE.
-	 */
-	int straight_list_insert(straight_list_t*, straight_list_movement_t, const void*);
-	
-	/**
-	 * ACTUALIZAR (el elemento corriente)
-	 * Pre: Lista creada.
-	 * Post: Se actualizó el elemento corriente, destruyendo el que estaba y
-	 *       cambiándolo por el pasado por parámetro.
-	 * Si pudo actualizar el elemento devuelve TRUE, sino FALSE.
-	 */
-int straight_list_update(straight_list_t*, const void*);

@@ -1,12 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include "ADTWS_Ops.h"
+#include "ADTWS_Op.h"
 
 
 
-int ADTWS_Ops_create(ADTWS_Ops* op, int argc, const char** argv){
+int ADTWS_Op_create(ADTWS_Op* op, int argc, const char** argv){
 
 	unsigned int i;
 	int st;
@@ -16,19 +12,19 @@ int ADTWS_Ops_create(ADTWS_Ops* op, int argc, const char** argv){
 	}
 
 
-	if((st = ADTWS_Ops_set_request(op,argc,argv))!= OK){
+	if((st = ADTWS_Op_set_request(op,argc,argv))!= OK){
 		return st;
 	}	
 	
-	if((st = ADTWS_Ops_set_operation(op))!= OK){
+	if((st = ADTWS_Op_set_operation(op))!= OK){
 		return st;
 	}
 
-	if((st = ADTWS_Ops_set_format(op,argc,argv))!= OK){
+	if((st = ADTWS_Op_set_format(op,argc,argv))!= OK){
 		return st;
 	}	
 
-	if((st = ADTWS_Ops_set_operation_time(op))!= OK){
+	if((st = ADTWS_Op_set_operation_time(op))!= OK){
 		return st;
 	}
 
@@ -41,7 +37,7 @@ int ADTWS_Ops_create(ADTWS_Ops* op, int argc, const char** argv){
 
 
 
-int ADTWS_Ops_destroy(ADTWS_Ops* op){
+int ADTWS_Op_destroy(ADTWS_Op* op){
 
 	
 	if(op == NULL){
@@ -80,7 +76,7 @@ int ADTWS_Ops_destroy(ADTWS_Ops* op){
 /*esta función copia en el campo request del ADT Web Service Operation todos los argv.
 concat_args() está en la biblioteca utils*/
 
-int ADTWS_Ops_get_request(ADTWS_Ops* op, int arr_len, const char** arr){
+int ADTWS_Op_get_request(ADTWS_Op* op, int arr_len, const char** arr){
 
 	int st;
 	char* request;
@@ -99,7 +95,7 @@ int ADTWS_Ops_get_request(ADTWS_Ops* op, int arr_len, const char** arr){
 }
 
 
-int ADTWS_Ops_get_operation(ADTWS_Ops* op){
+int ADTWS_Op_get_operation(ADTWS_Op* op){
 
 	int st;
 	unsigned int i;
@@ -108,7 +104,7 @@ int ADTWS_Ops_get_operation(ADTWS_Ops* op){
 	if(op == NULL){
 		return ERROR_NULL_POINTER;
 	}
-	/*Acá falta el algoritmo que agarra el campo request del ADTWS_Ops
+	/*Acá falta el algoritmo que agarra el campo request del ADTWS_Op
 	y copia el url (https://...etc) en el char* url */
 
 	if((st = parse_url(url,op->operation))!= OK){
@@ -150,7 +146,7 @@ int parse_url(const char* url, char* op_name){
 
 
 
-int ADTWS_Ops_get_format(ADTWS_Ops* op, int len, const char** request){
+int ADTWS_Op_get_format(ADTWS_Op* op, int len, const char** request){
 
 	unsigned int i;
 
@@ -176,9 +172,8 @@ int ADTWS_Ops_get_format(ADTWS_Ops* op, int len, const char** request){
 
 
 
-/*get_time() está en la biblioteca sys_time*/
 
-int ADTWS_Ops_get_operation_time(ADTWS_Ops* op){
+int ADTWS_Op_get_operation_time(ADTWS_Op* op){
 
 	int st;
 	char* current_time;
@@ -187,7 +182,7 @@ int ADTWS_Ops_get_operation_time(ADTWS_Ops* op){
 		return ERROR_NULL_POINTER;
 	}	
 	
-	if((st = get_time(current_time))!=OK){
+	if((st = get_time(current_time))!=OK){ /*get_time todavía no existe*/
 		return st;
 	}
 
