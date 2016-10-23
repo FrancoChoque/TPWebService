@@ -4,10 +4,17 @@
 
 #include <stdio.h>
 #include "errors.h"
+#include "string.h"
 
-#define STR_LEN 20;
-#define MAX_STR_LEN 140;
-
+#define STR_LEN 20
+#define MAX_STR_LEN 140
+#define FIELD_CLIENT_ID 0
+#define FIELD_CLIENT_NAME 1
+#define FIELD_CLIENT_SURNAME 2
+#define FIELD_CLIENT_PHONE 3
+#define FIELD_CLIENT_MAIL 4
+#define FIELD_CLIENT_DATE 5
+#define DELIM ';'
 
 
 
@@ -23,7 +30,7 @@ typedef struct{
 
 
 
-int destroy_client(void*);
+void destroy_client(void*);
 
 int copy_client(void*, const void*);
 

@@ -2,7 +2,7 @@
 
 int copy_client(void* dest, const void* source){
 
-	printf("f\n");
+	
 
 	if(dest == NULL || source == NULL){
 		return 1;
