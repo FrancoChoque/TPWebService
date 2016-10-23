@@ -24,7 +24,7 @@ int main(void){
 
 	
 	print_client(&client);
-	printf("yay\n");
+	
 
 	return 0;
 
