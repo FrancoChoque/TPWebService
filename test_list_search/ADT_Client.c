@@ -2,6 +2,7 @@
 
 int copy_client(void* dest, const void* source){
 
+	
 
 	if(dest == NULL || source == NULL){
 		return 1;
@@ -27,14 +28,4 @@ int copy_client(void* dest, const void* source){
 void destroy_client(void* data){
 
 	return ;
-}
-
-int compare_client(const void* a, const void* b){
-
-	client_t *client_a, *client_b;
-
-	client_a = (client_t*) a;
-	client_b = (client_t*) b;
-
-	return (client_a->client_id - client_b->client_id);
 }

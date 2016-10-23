@@ -22,8 +22,8 @@ int main(int argc, char* argv[]){
 	}
 
 	if((st = ADTWS_create(web_service))!= OK){
-		ADTWS_Op_destroy(operation);
 		log_error(st);
+		ADTWS_Op_destroy(operation);
 		return EXIT_FAILURE;
 	}
 

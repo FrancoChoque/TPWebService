@@ -1,34 +1,35 @@
 #include "main.h"
 
+int search_client(int, list_t*);
+int compare_client(int,int);
+
 
 
 int main(void){
 
-		
+	client_t client;	
 	list_t list;
-	client_t client;
-	int st;
+	int id,st;
 		
 	if((st = ADT_List_create(&list,sizeof(client_t),(copy_t)copy_client,(destroy_t)destroy_client))!= OK){
 		printf("%d\n",st);
 		return 1;
-	}	
+	}
+
 
 	if((st = fill_list(&list))!= OK){
 		return st;
 	}
-
 	
-
 	ADT_List_get_node(&list,(void*)&client);
 
 	
-	print_client(&client);
-	
+
+	id = 1;
+
+	search_client(id,&list);
 
 	return 0;
-
-
 
 }
 
@@ -105,7 +106,7 @@ int fill_list(list_t* list){
 		split(str,&fieldv,&fieldc);
 		client.client_id = (int) strtoul(fieldv[FIELD_CLIENT_ID],&temp,10);
 		strncpy(client.name,fieldv[FIELD_CLIENT_NAME],STR_LEN-1);
-		strncpy(client.surname,fieldv[FIELD_CLIENT_SURNAME],STR_LEN-1);
+		strncpy(client.surname,fieldv[FIELD_CLIENT_SURNAME],STR_LEN-1);	
 		strncpy(client.telephone,fieldv[FIELD_CLIENT_PHONE],STR_LEN-1);
 		strncpy(client.mail,fieldv[FIELD_CLIENT_MAIL],STR_LEN-1);
 		strncpy(client.date,fieldv[FIELD_CLIENT_DATE],STR_LEN-1);
@@ -116,9 +117,36 @@ int fill_list(list_t* list){
 		}
 
 	}
-
+	
 	
 	return 0;
 
 
+}
+
+int search_client(int id, list_t* list){
+
+	client_t client;
+
+	move_current(list,mov_first);
+	printf("f\n");
+
+	while(list->current->next != NULL){
+
+		ADT_List_get_node(list,(void*)&client);
+		if(!compare_client(id,client.client_id)){
+			print_client(&client);
+			return 0;
+		} 
+		move_current(list,mov_next);
+	}
+
+	return 1;
+
+
+}
+
+int compare_client(int a, int b){
+
+	return(a == b)? 0:1;
 }

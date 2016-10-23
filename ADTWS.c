@@ -4,12 +4,13 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op* op){
 
 	int st;
 	list_t client_list, operation_list;
+	queue_t operation_queue;
 
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((st = ADT_List_create(&client_list,sizeof(client_t), destroy_client, copy_client))!= OK){
+	if((st = ADT_List_create(&client_list,sizeof(client_t),(destroy_t)destroy_client,(copy_t)copy_client))!= OK){
 		return st;
 	}
 
@@ -30,13 +31,58 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op* op){
 		return st;
 	}
 
-	ADTWS->all_clients = client_list;
-	ADTWS->all_operations = operation_list;
-	ADTWS->current_op = *op;
+	ADTWS->client_list = client_list;
+	ADTWS->operation_list = operation_list;
+	ADTWS->operation_t = *op;
+	ADTWS->execution_t = operation_queue;
 
 	return OK;			
 }
 
+
+
+int ADTWS_valid_operation(ADTWS* ws){
+
+	
+
+	if(ws == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if(search_list((void*)ws->operation_t->operation,ws->operation_list,(comparator_t)compare_operation)){
+		return INVALID_OPERATION;
+	}
+
+	return OK;
+}
+
+
+int search_list(void* node, list_t* list,comparator_t compare){
+
+
+	while(list->current->next != NULL){
+		if(!compare(node,list->current)){
+			return TRUE;
+		} 
+		move_current(list,mov_next);
+	}
+	
+	return FALSE;
+
+}
+
+
+int compare_operation(const void* a, const void* b){
+
+	char *str_a, *str_b;
+
+	str_a = (char*) a;
+	str_b = (char*) b;
+
+	return strcmp(a,b);
+
+
+}
 
 
 
@@ -56,7 +102,7 @@ int fill_operation_list(list_t* operation_list){
 	}
 
 	while(!feof(fp)){
-		if((fgets(str,STR_LEN,fp)) == NULL) break;
+		if((fgets(str,sizeof(str),fp)) == NULL) break;
 		if((st = ADT_List_insert_node(operation_list,mov_next,(void*)str))!= OK){
 			fclose(fp);
 			return st;
@@ -90,17 +136,17 @@ int fill_client_list(list_t* client_list){
 
 	while(!feof(fp)){
 
-		if((fgets(str,MAX_STR_LEN,fp)) == NULL) break;
+		if((fgets(str,sizeof(str),fp)) == NULL) break;
 		if((st = split_csv_string(str,&fieldv,&fieldc))!= OK){ /*split_csv_string() está en utils.c*/
 			return st;
 			fclose(fp);
 		}
 		client.client_id = (int) strtoul(fieldv[FIELD_CLIENT_ID],&temp,10);
-		strcpy(client.name,fieldv[FIELD_CLIENT_NAME]);
-		strcpy(client.surname,fieldv[FIELD_CLIENT_SURNAME]);
-		strcpy(client.telephone,fieldv[FIELD_CLIENT_PHONE]);
-		strcpy(client.mail,fieldv[FIELD_CLIENT_MAIL]);
-		strcpy(client.date,fieldv[FIELD_CLIENT_DATE]);
+		strncpy(client.name,fieldv[FIELD_CLIENT_NAME],STR_LEN-1);
+		strncpy(client.surname,fieldv[FIELD_CLIENT_SURNAME],STR_LEN-1);
+		strncpy(client.telephone,fieldv[FIELD_CLIENT_PHONE],STR_LEN-1);
+		strncpy(client.mail,fieldv[FIELD_CLIENT_MAIL],STR_LEN-1);
+		strncpy(client.date,fieldv[FIELD_CLIENT_DATE],STR_LEN-1);
 		if((st = ADT_List_insert_node(client_list,mov_next,(void*)&client))!= OK){
 			destroy_string_array(fieldv,fieldc);
 			free(fieldv);

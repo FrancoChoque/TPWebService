@@ -164,9 +164,7 @@ int ADT_List_insert_node(list_t* list, movement_t M, const void* adition){
 	if((st = build_node(&new_node,list->data_size,adition,list->copy))!= OK){
 		return st;
 	}
-	if(new_node == NULL){
-		printf("osss\n");
-	}
+	
 	
 	
 	if((list->first == NULL) || (M == mov_first) || ((M == mov_previous) && (list->first == list->current))){
@@ -255,7 +253,7 @@ int build_node(node_t** node, size_t size, const void* data, copy_t copy){
 	
 	if(((*node) = (node_t*) malloc(sizeof(node_t))) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
-		
+	}
 	
 	if(((*node)->data = (void*) malloc (size)) == NULL){
 		free(*node);

@@ -7,8 +7,8 @@
 #include "utils.h"
 #include "ADT_List.h"
 #include "ADT_Client.h"
-
-
+#include "ADT_Queue.h"
+#include "ADTWS_Op"
 
 typedef struct{
 	ADTWS_Op operation_t;
@@ -23,7 +23,10 @@ int ADTWS_valid_operation(ADTWS*);
 int ADTWS_consume(ADTWS*);
 int ADTWS_destroy (ADTWS*);
 int ADTWS_get_client_list();
-int ADTWS_get_operation_list();
 
+
+
+int fill_operation_list(list_t*);
+int fill_client_list(list_t*);
 
 #endif
