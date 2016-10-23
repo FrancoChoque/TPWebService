@@ -2,6 +2,7 @@
 
 int copy_client(void* dest, const void* source){
 
+	
 
 	if(dest == NULL || source == NULL){
 		return 1;
@@ -35,7 +36,6 @@ int compare_client(const void* a, const void* b){
 
 	client_a = (client_t*) a;
 	client_b = (client_t*) b;
-
+	printf("%d\n",client_a->client_id - client_b->client_id);
 	return (client_a->client_id - client_b->client_id);
 }
-

@@ -50,7 +50,7 @@ int ADTWS_valid_operation(ADTWS* ws){
 	}
 
 	if(search_list((void*)ws->operation_t->operation,ws->operation_list,(comparator_t)compare_operation)){
-		return INVALID_OPERATION;
+		return INVALID_OPERATION3;
 	}
 
 	return OK;
