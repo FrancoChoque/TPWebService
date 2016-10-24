@@ -1,7 +1,7 @@
 #include "ADT_List.h"
 
 
-int ADT_List_create (list_t* list, size_t size, copy_t copy, destroy_t destroy){
+int ADT_List_create (list_t* list, size_t size, list_copy_t copy, list_destroy_t destroy){
 
 	if(list == NULL){
 		return ERROR_NULL_POINTER;
@@ -189,6 +189,7 @@ int ADT_List_insert_node(list_t* list, movement_t M, const void* adition){
 }
 
 
+
 int ADT_List_update(list_t* list, const void* data) {
 	
 	
@@ -224,6 +225,20 @@ int ADT_List_update(list_t* list, const void* data) {
 	
 }
 
+int ADT_List_search(void* node, list_t* list,list_compare_t compare){
+
+
+	move_current(list,mov_first);
+
+	do{
+		if(!compare(node,list->current->data)){
+			return TRUE;
+		}
+	}while(move_current(list,mov_next) == OK);
+	
+	return FALSE;
+}
+
 
 
 
@@ -231,9 +246,7 @@ int ADT_List_update(list_t* list, const void* data) {
 /* <private functions> */
 
 
-
-
-void dispose_node(node_t *node, destroy_t destroy){
+void dispose_node(node_t *node, list_destroy_t destroy){
 	
 	if(node == NULL) return;
 	destroy(node->data);
@@ -244,7 +257,7 @@ void dispose_node(node_t *node, destroy_t destroy){
 }
 
 
-int build_node(node_t** node, size_t size, const void* data, copy_t copy){
+int build_node(node_t** node, size_t size, const void* data, list_copy_t copy){
 	
 	int st;
 

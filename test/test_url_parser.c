@@ -2,30 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 
+int parse_url(const char*, char**);
 
 char* strdup(const char*);
 
 int main (void){
 
-
-	char* q;
-	char* p;
+	char str[] = "https://algodetp.com/getClientbyID/1";
 	char* s;
-	char** values;
-	int i;
 
-	
+	parse_url(str,&s);
 
-	char str[] = "https://kapa.com/kapita/s";
-
-	s = (char*) malloc (sizeof(strlen(str))+1);
-	strcpy(s,str);
-
-	char delims[] = {'/','\0'};
-
-	for(q = s, i = 0; i < 3 && (p = strtok(q,delims))!= NULL; q = NULL, i++);
-
-	strcpy(s,p);
 	
 	printf("%s\n", s);
 
@@ -43,5 +30,29 @@ char* strdup (const char* s){
 	strcpy(d,s);
 
 	return d;
+
+}
+
+
+
+
+
+int parse_url(const char* url, char** op_name){
+
+	
+	char* aux;
+	char* aux2;
+	unsigned int i;
+	char delims[] = {'/','\0'}; 
+	char* temp;
+
+	temp = strdup(url);
+
+
+	for(aux = temp, i = 0; i < 3 && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
+
+	*op_name = strdup(aux2);
+	
+	return 0;
 
 }

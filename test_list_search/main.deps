@@ -1,9 +1,0 @@
-main.o main.deps : main.c main.h ADT_Client.h errors.h ADT_List.h
-
-main.h:
-
-ADT_Client.h:
-
-errors.h:
-
-ADT_List.h:

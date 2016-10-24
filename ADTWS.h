@@ -18,7 +18,7 @@ typedef struct{
 }ADTWS;
 
 
-int ADTWS_create(ATDWS*, ADTWS_Op*);
+int ADTWS_create(ATDWS*, ADTWS_Op);
 int ADTWS_valid_operation(ADTWS*);
 int ADTWS_consume(ADTWS*);
 int ADTWS_destroy (ADTWS*);

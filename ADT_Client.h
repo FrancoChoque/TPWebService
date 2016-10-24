@@ -7,8 +7,12 @@
 
 #define STR_LEN 20;
 #define MAX_STR_LEN 140;
-
-
+#define CLIENT_ID "id"
+#define CLIENT_NAME "Name"
+#define CLIENT_SURNAME "Surname"
+#define CLIENT_TELEPHONE "Telephone"
+#define CLIENT_MAIL "Mail"
+#define CLIENT_DATE "TIme"
 
 
 typedef struct{
@@ -24,10 +28,20 @@ typedef struct{
 
 
 int destroy_client(void*);
-
+int compare_client(const void*, const void*);
 int copy_client(void*, const void*);
 
+int modify_client_name(void*,void*);
+int modify_client_surname(void*,void*);
+int modify_client_telephone(void*,void*);
+int modify_client_mail(void*,void*);
+int modify_client_date(void*,void*);
 
-int compare_client(const void*, const void*);
+
+
+void print_client_as_jason(const void*, FILE*);
+void print_client_as_xml(const void*, FILE*);
+
+
 
 #endif

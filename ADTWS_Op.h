@@ -8,6 +8,8 @@
 #include "utils.h"
 
 #define DEFAULT_FORMAT "GET"
+#define POST_FORMAT_FLAG "-X"
+
 
 typedef struct{
 	char* request;
@@ -28,6 +30,9 @@ int ADTWS_Op_set_operation(ADTWS_Op*);
 int ADTWS_Op_set_request(ADTWS_Op*, int, const char**);
 int ADTWS_Op_set_format(ADTWS_Op*, int, const char**);
 int ADTWS_Op_set_operation_time(ADTWS_Op*);
+
+char* ADTWS_Op_get_operation(ADTWS_Op);
+char* ADTWS_Op_get_format(ADTWS_Op);
 
 
 

@@ -8,7 +8,7 @@ int main(void){
 
 	time_t time_stamp;
 	struct tm* display;
-	char time_string[21];
+	char time_string[20];
 	char str;
 
 	if(time(&time_stamp) == -1){

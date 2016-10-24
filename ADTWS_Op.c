@@ -1,11 +1,14 @@
 #include "ADTWS_Op.h"
 
+int parse_url(const char*, char**);
+int parse_format_header(const char*, char**);
+
+
 
 
 int ADTWS_Op_create(ADTWS_Op* op, int argc, const char** argv){
 
-	unsigned int i;
-	int st;
+	int i, st;
 
 	if(argv == NULL || op == NULL){
 		return ERROR_NULL_POINTER;
@@ -76,7 +79,7 @@ int ADTWS_Op_destroy(ADTWS_Op* op){
 /*esta función copia en el campo request del ADT Web Service Operation todos los argv.
 concat_args() está en la biblioteca utils*/
 
-int ADTWS_Op_get_request(ADTWS_Op* op, int arr_len, const char** arr){
+int ADTWS_Op_set_request(ADTWS_Op* op, int arr_len, const char** arr){
 
 	int st;
 	char* request;
@@ -95,10 +98,9 @@ int ADTWS_Op_get_request(ADTWS_Op* op, int arr_len, const char** arr){
 }
 
 
-int ADTWS_Op_get_operation(ADTWS_Op* op){
+int ADTWS_Op_set_operation(ADTWS_Op* op){
 
-	int st;
-	unsigned int i;
+	int st, i;
 	char* url;
 
 	if(op == NULL){
@@ -107,7 +109,7 @@ int ADTWS_Op_get_operation(ADTWS_Op* op){
 	/*Acá falta el algoritmo que agarra el campo request del ADTWS_Op
 	y copia el url (https://...etc) en el char* url */
 
-	if((st = parse_url(url,op->operation))!= OK){
+	if((st = parse_url(url,&op->operation,URL_FIELD_OPERATION))!= OK){
 		return st;
 	}
 
@@ -117,63 +119,33 @@ int ADTWS_Op_get_operation(ADTWS_Op* op){
 
 }
 
-/*esta función copia en op_name el nombre de la operación que está en argv
-por ej: le paso "https://algodetp.com/getTime" y copia "getTime" en op_name
-le paso "https://algodetp.com/getClientbyID/1" y copia "getClientbyID" en op_name
-Pueden probar esta función con test_url_parser.c */
-int parse_url(const char* url, char* op_name){
-
-	
-	char* aux;
-	char* aux2;
-	unsigned int i;
-	char delims[] = {URL_DELIM,'\0'}; /*URL_DELIM vendria a ser el slash (/),*/
 
 
-	if(url == NULL || op_name == NULL){
-		return ERROR_NULL_POINTER;
-	}	
+int ADTWS_Op_set_format(ADTWS_Op* op, int len, const char** request){
 
-	for(aux = url, i = 0; i < 3 && (aux2 = strtok(q,delims))!= NULL; aux = NULL, i++);
-
-	if((op_name = strdup(aux2)) == NULL){
-		return ERROR_MEMORY_SHORTAGE;
-	}	
-	
-	return OK;
-
-}
-
-
-
-int ADTWS_Op_get_format(ADTWS_Op* op, int len, const char** request){
-
-	unsigned int i;
+	int i, st;
+	char* str;
 
 	if(op == NULL || request == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
 	for(i = 0; i < len; i++){
-		if(!strcmp(request[i],FORMAT_FLAG)){ /*FORMAT FLAG es el -X*/
-			if((op->format = strdup(request[i+1])) == NULL){
-				return ERROR_MEMORY_SHORTAGE;
+		if(!strcmp(request[i],FORMAT_FLAG)){ 
+			if((st = parse_url(request[i+1],&op->format,CONTENT_FORMAT_FIELD))!= OK){
+				return st;
 			}
 			return OK; 
 		}	
 	}
 
-	if((op->format = strdup(DEFAULT_FORMAT)) == NULL){ /*DEFAULT_FORMAT es GET*/
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	return OK;
+	return ERROR_INVALID_FORMAT;
 }
 
 
 
 
-int ADTWS_Op_get_operation_time(ADTWS_Op* op){
+int ADTWS_Op_set_operation_time(ADTWS_Op* op){
 
 	int st;
 	char* current_time;
@@ -194,11 +166,72 @@ int ADTWS_Op_get_operation_time(ADTWS_Op* op){
 }	
 
 
-int parse_xml(){
 
+int ADTWS_Op_set_response(ADTWS_Op* op, char* str){
+
+	if(op == NULL || str == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if(!strcmp(op->format,CONTENT_FORMAT_XML)){
+		print_str_xml(&op->response,str);
+		return OK;
+	}
+
+	print_str_jason(&op->response,str);
+
+	return OK;
 }
 
 
-int parse_jason(){
 
+char* ADTWS_Op_get_operation(ADTWS_Op op){
+
+	return op.operation;
 }
+
+char* ADTWS_Op_get_format(ADTWS_Op op){
+
+	return op.format;
+}
+
+
+/*esta función copia en op_name el nombre de la operación que está en argv
+por ej: le paso "https://algodetp.com/getTime" y copia "getTime" en op_name
+le paso "https://algodetp.com/getClientbyID/1" y copia "getClientbyID" en op_name
+edit: le metí el int field para hacerla genérica y obtener cualquier campo
+*/
+
+int parse_url(const char* url, char** str, int field){
+
+	
+	char *aux,*aux2,*temp;
+	int i;
+	char delims[] = {URL_DELIM,'\0'}; 
+
+
+	if(url == NULL || op_name == NULL){
+		return ERROR_NULL_POINTER;
+	}	
+
+	if((temp = strdup(url)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	for(aux = url, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
+
+	if((*str = strdup(aux2)) == NULL){
+		free(temp);
+		temp = NULL;
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	free(temp);
+	temp = NULL;	
+	
+	return OK;
+}
+
+
+
+

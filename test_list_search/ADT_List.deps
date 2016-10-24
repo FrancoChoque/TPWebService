@@ -1,5 +1,0 @@
-ADT_List.o ADT_List.deps : ADT_List.c ADT_List.h errors.h
-
-ADT_List.h:
-
-errors.h:

@@ -1,6 +1,7 @@
 #include "main.h"
 
 
+
 int main(int argc, char* argv[]){
 
 	int st;
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	if((st = execute_operation(operation,web_service))!= OK){
+	if((st = execute_operation(operation))!= OK){
 		log_error(st);
 		ADTWS_Op_destroy(operation);
 		ADTWS_destroy(web_service);
@@ -58,7 +59,22 @@ int validate_arguments(int argc, char** argv){
 
 
 
-int execute_operation(ADTWS* web_service, ADTWS_Op* operation){
+int execute_operation(ADTWS* web_service){
+
+	FILE* config_file;
+	
+	parse_url(&config_file_path,ADTWS_Op_get_url(web_service->operation_t),URL_FIELD_CONFIG);
+
+	config_file = fopen(config_file_path,"rt");
+
+	while(!feof(config_file)){
+
+		if(fgets(str,sizeof(str),config_file) == NULL) break;
+
+
+	}
+
+
 
 	if(web_service == NULL || operation == NULL){
 		return ERROR_NULL_POINTER;
