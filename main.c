@@ -1,6 +1,5 @@
 #include "main.h"
 
-// prueba
 
 
 int main(int argc, char* argv[]){
