@@ -39,7 +39,7 @@ char* ADTWS_Op_get_format(ADTWS_Op);
 int parse_xml();
 int parse_jason();
 
-int ADTWS_Op_validate_operation(ADTWS_Op*);
+
 
 
 #endif

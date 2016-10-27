@@ -39,7 +39,7 @@
 	
 	int queue_is_empty(queue_t);
 
-	int ADT_Queue_add(queue_t*, void*);
+	int ADT_Queue_push(queue_t*, void*);
 	
 	int ADT_Queue_dequeue(queue_t*, void*);
 

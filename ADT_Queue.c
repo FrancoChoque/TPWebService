@@ -34,7 +34,7 @@ int queue_is_empty(queue_t queue){
 }
 
 
-int ADT_Queue_add(queue_t *queue, void* new_data){
+int ADT_Queue_push(queue_t *queue, void* new_data){
 	
 
 	queue_node_t *node; 

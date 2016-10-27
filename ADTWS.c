@@ -10,7 +10,7 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((st = ADT_List_create(&client_list,sizeof(client_t),(list_destroy_t)destroy_client,(list_copy_t)copy_client))!= OK){
+	if((st = ADT_List_create(&client_list,sizeof(client_t),(list_copy_t)copy_client,(list_destroy_t)destroy_client))!= OK){
 		return st;
 	}
 
@@ -20,10 +20,11 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 	}
 	
 
-	if((st = ADT_List_create(&operation_list,sizeof(operation_t), destroy_operation, copy_operation))!= OK){
+	if((st = ADT_List_create(&operation_list,STR_LEN,(list_copy_t)copy_operation,(list_destroy_t)destroy_operation))!= OK){
 		ADT_List_destroy(&client_list);
 		return st;
 	}
+
 
 	if((st = fill_operation_list(&opearation_list))!= OK){
 		ADT_List_destroy(&client_list);
@@ -31,10 +32,17 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 		return st;
 	}
 
+	if((st = ADT_Queue_create(&operation_queue,STR_LEN,(queue_copy_t)copy_operation,(queue_destroy_t)destroy_operation))!= OK){
+		ADT_List_destroy(&client_list);
+		ADT_List_destroy(&operation_list);
+		return st;	
+	}
+
+
 	ADTWS->client_list = client_list;
 	ADTWS->operation_list = operation_list;
 	ADTWS->operation_t = op;
-	ADTWS->execution_t = operation_queue;
+	ADTWS->execution_queue = operation_queue;
 
 	return OK;			
 }
@@ -62,7 +70,8 @@ int ADTWS_consume(ADTWS* ws){
 
 	op = ADTWS_Op_get_operation(ws->operation_list);
 
-	op(ws);
+	
+
 
 	return OK;
 
@@ -70,8 +79,17 @@ int ADTWS_consume(ADTWS* ws){
 
 int ADTWS_destroy(ADTWS* ws){
 
+	if(ws == NULL){
+		return ERROR_NULL_POINTER:
+	}
+
+	
 
 }
+
+
+
+
 
 
 

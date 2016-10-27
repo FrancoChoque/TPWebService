@@ -2,6 +2,7 @@
 
 
 
+
 int main(int argc, char* argv[]){
 
 	int st;
@@ -18,6 +19,11 @@ int main(int argc, char* argv[]){
 
 	
 	if((st = ADTWS_Op_create(argc,argv,operation))!= OK){		
+		log_error(st);
+		return EXIT_FAILURE;
+	}
+
+	if((st = set_file_paths(ADTWS_Ops_get_url(operation)))!= OK){
 		log_error(st);
 		return EXIT_FAILURE;
 	}
@@ -59,30 +65,52 @@ int validate_arguments(int argc, char** argv){
 
 
 
-int execute_operation(ADTWS* web_service){
+int execute_operation(ADTWS* ws){
 
 	FILE* config_file;
 	
-	parse_url(&config_file_path,ADTWS_Op_get_url(web_service->operation_t),URL_FIELD_CONFIG);
-
-	config_file = fopen(config_file_path,"rt");
-
-	while(!feof(config_file)){
-
-		if(fgets(str,sizeof(str),config_file) == NULL) break;
-
-
-	}
-
-
 
 	if(web_service == NULL || operation == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-	ADTWS_consume(operation,web_service);
-	
 
+
+	if((st = ADTWS_consume(operation))!= OK){
+		log_operation(msg_error[st]);
+		return FAILED_OPERATION;
+	}
+
+	log_operation(ws->operation_t);
 
 	return OK;
+}
+
+
+int set_file_paths(char* url){
+
+	FILE* fp;
+	char *temp;
+	int i;
+
+	if (url == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	parse_request(url,&temp,REQUEST_FIELD_DOMAIN);
+
+	config_file = strtok(temp,':');
+
+	strcat(config_file,".conf");
+
+	fp = fopen(config_file,"rt");
+
+	for(i = 0; !feof(fp); i++){
+		if(fgets(str,sizeof(str),fp) == NULL) break;
+		file_paths[i] = strdup(str);
+	}
+
+	return OK;
+
+
 }

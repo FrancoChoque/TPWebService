@@ -38,7 +38,7 @@ int compare_client(const void* a, const void* b){
 }
 
 
-void print_client_as_xml(const void* c, FILE* fp){
+char* print_client_as_xml(const void* c, FILE* fp){
 
 	client_t* client;
 	char str[MAX_STR_LEN];
@@ -53,13 +53,11 @@ void print_client_as_xml(const void* c, FILE* fp){
 		CLIENT_TELEPHONE,client->telephone,CLIENT_TELEPHONE,
 		CLIENT_MAIL,client->mail,CLIENT_MAIL,CLIENT_DATE,client->date,CLIENT_DATE);
 	
-	fprintf(fp,"%s\n",str);
-
-	return;
+	return str;
 }
 
 
-void print_client_as_jason(const void* c, FILE* fp){
+char* print_client_as_jason(const void* c, FILE* fp){
 
 	client_t* client;
 	char str[MAX_STR_LEN];
@@ -68,11 +66,10 @@ void print_client_as_jason(const void* c, FILE* fp){
 
 	if(client == NULL) return;
 
-	sprintf(str,"%s:%d,%s:%s,%s:%s,%s:%s,%s:%s,%s:%s",CLIENT_ID,client->id,CLIENT_NAME,client->name,
+	sprintf(str,"{%s:%d,%s:%s,%s:%s,%s:%s,%s:%s,%s:%s}",CLIENT_ID,client->id,CLIENT_NAME,client->name,
 		CLIENT_SURNAME,client->surname,CLIENT_TELEPHONE,client->telephone,
 		CLIENT_MAIL,client->mail,CLIENT_DATE,client->date)
 
-	fprintf(fp,"%s\n",str);
-
+	
 	return str;
 }

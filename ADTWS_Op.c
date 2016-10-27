@@ -1,6 +1,6 @@
 #include "ADTWS_Op.h"
 
-int parse_url(const char*, char**);
+int parse_request(const char*, char**);
 int parse_format_header(const char*, char**);
 
 
@@ -109,7 +109,7 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 	/*Acá falta el algoritmo que agarra el campo request del ADTWS_Op
 	y copia el url (https://...etc) en el char* url */
 
-	if((st = parse_url(url,&op->operation,URL_FIELD_OPERATION))!= OK){
+	if((st = parse_request(url,&op->operation,REQUEST_FIELD_OPERATION))!= OK){
 		return st;
 	}
 
@@ -132,7 +132,7 @@ int ADTWS_Op_set_format(ADTWS_Op* op, int len, const char** request){
 
 	for(i = 0; i < len; i++){
 		if(!strcmp(request[i],FORMAT_FLAG)){ 
-			if((st = parse_url(request[i+1],&op->format,CONTENT_FORMAT_FIELD))!= OK){
+			if((st = parse_request(request[i+1],&op->format,REQUEST_FIELD_FORMAT))!= OK){
 				return st;
 			}
 			return OK; 
@@ -173,16 +173,10 @@ int ADTWS_Op_set_response(ADTWS_Op* op, char* str){
 		return ERROR_NULL_POINTER;
 	}
 
-	if(!strcmp(op->format,CONTENT_FORMAT_XML)){
-		print_str_xml(&op->response,str);
-		return OK;
-	}
-
-	print_str_jason(&op->response,str);
+	op->response = str;
 
 	return OK;
 }
-
 
 
 char* ADTWS_Op_get_operation(ADTWS_Op op){
@@ -195,6 +189,11 @@ char* ADTWS_Op_get_format(ADTWS_Op op){
 	return op.format;
 }
 
+char* ADTWS_Op_get_response(ADTWS_Op op){
+
+	return op.response;
+}
+
 
 /*esta función copia en op_name el nombre de la operación que está en argv
 por ej: le paso "https://algodetp.com/getTime" y copia "getTime" en op_name
@@ -202,7 +201,7 @@ le paso "https://algodetp.com/getClientbyID/1" y copia "getClientbyID" en op_nam
 edit: le metí el int field para hacerla genérica y obtener cualquier campo
 */
 
-int parse_url(const char* url, char** str, int field){
+int parse_request(const char* request, char** str, int field){
 
 	
 	char *aux,*aux2,*temp;
@@ -210,7 +209,7 @@ int parse_url(const char* url, char** str, int field){
 	char delims[] = {URL_DELIM,'\0'}; 
 
 
-	if(url == NULL || op_name == NULL){
+	if(url == NULL){
 		return ERROR_NULL_POINTER;
 	}	
 
@@ -218,7 +217,7 @@ int parse_url(const char* url, char** str, int field){
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
-	for(aux = url, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
+	for(aux = request, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
 
 	if((*str = strdup(aux2)) == NULL){
 		free(temp);
@@ -233,5 +232,8 @@ int parse_url(const char* url, char** str, int field){
 }
 
 
+int parse_request_data(const char* request, char** str, char* flag){
 
+
+}
 

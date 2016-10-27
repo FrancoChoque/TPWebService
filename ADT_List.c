@@ -61,7 +61,7 @@ int empty_list(list_t *list){
 
 int is_empty (list_t list){
 
-	return (list.first == NULL)? 1:0;
+	return (list.first == NULL);
 }
 
 
@@ -215,8 +215,6 @@ int ADT_List_update(list_t* list, const void* data) {
 		return st;
 	}
 
-	
-
 	list->destroy(list->current->data);
 	free(list->current->data);
 	list->current->data = new_data;
@@ -225,7 +223,7 @@ int ADT_List_update(list_t* list, const void* data) {
 	
 }
 
-int ADT_List_search(void* node, list_t* list,list_compare_t compare){
+int ADT_List_search(list_t* list, void* node, list_compare_t compare){
 
 
 	move_current(list,mov_first);

@@ -12,7 +12,7 @@
 #define CLIENT_SURNAME "Surname"
 #define CLIENT_TELEPHONE "Telephone"
 #define CLIENT_MAIL "Mail"
-#define CLIENT_DATE "TIme"
+#define CLIENT_DATE "Time"
 
 
 typedef struct{
@@ -39,8 +39,8 @@ int modify_client_date(void*,void*);
 
 
 
-void print_client_as_jason(const void*, FILE*);
-void print_client_as_xml(const void*, FILE*);
+char* print_client_as_jason(const void*);
+char* print_client_as_xml(const void*);
 
 
 
