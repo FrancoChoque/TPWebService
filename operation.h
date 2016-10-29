@@ -1,27 +1,22 @@
 #ifndef OPERATION__H__
 #define OPERATION__H__ 
 
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "errors.h"
+#include "utils.h"
+
+#define OPERATION "operation"
+#define VALID "valid"
+#define MSG_TRUE "true"
+#define MSG_FALSE "false"
 
 
-typedef int (*ws_operation) (ADTWS*);
-
-typedef enum{
-	GET,
-	POST
-}method_t;
 
 int compare_operation(const void*, const void*);
-
-typedef struct {
-	char* csv_file;
-	char* op_file;
-	char* log_file;
-	method_t method;
-	
-}config;
-
+int destroy_operation(void*);
+int copy_operation(void*, const void*);
 
 
 #endif

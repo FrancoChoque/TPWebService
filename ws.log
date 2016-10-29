@@ -1,0 +1,12 @@
+current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>

@@ -18,9 +18,8 @@ char* strdup(const char* s){ /*Copia string*/
 
 
 /*copia un arreglo de strings en un solo string*/
-int concat_str_array(int len, const char** arr, char* dest){ 
+int concat_str_array(int len, const char** arr, char** dest){ 
 
-	char* aux;
 	unsigned int i;
 
 
@@ -28,26 +27,18 @@ int concat_str_array(int len, const char** arr, char* dest){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((dest = (char*) malloc (INIT_CHOP)) == NULL){ 
+	if((*dest = (char*) malloc (INIT_CHOP)) == NULL){ 
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
 	for (i = 0; i < len; i++){
-		if((aux = (char*) malloc (strlen(arr[i])+1)) == NULL){
-			free(dest);
-			return ERROR_MEMORY_SHORTAGE;
-		}	
-		strcpy(aux,arr[i]);
-		if((dest = (char*) realloc (dest,strlen(dest)+strlen(aux)+1)) == NULL){
-			free(aux);
-			free(dest);
+			
+		if((*dest = (char*) realloc (*dest,strlen(*dest)+strlen(arr[i])+1)) == NULL){
 			return ERROR_MEMORY_SHORTAGE;
 		}
-		strcat(dest,aux);	
-		strcat(dest," ");
+		strcat(*dest,arr[i]);	
+		strcat(*dest," ");
 	}
-
-	free(aux);
 	
 	return OK;
 }

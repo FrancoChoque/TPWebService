@@ -16,12 +16,12 @@ int main(int argc, char* argv[]){
 		show_usage();
 		return EXIT_FAILURE;
 	}
-	
+
 	if((st = ADTWS_Op_create(&operation,argc, (const char**) argv))!= OK){		
 		log_error(st);
 		return EXIT_FAILURE;
 	}
-	printf("f\n");
+	
 	if((st = ADTWS_create(&web_service,operation))!= OK){
 		log_error(st);
 		ADTWS_Op_destroy(&operation);

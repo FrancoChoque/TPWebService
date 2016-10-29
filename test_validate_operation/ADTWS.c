@@ -20,19 +20,15 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 
 	ADTWS_set_config_file(ws);
 
-	
-	
-
 	if((st = ADT_List_create(&client_list,sizeof(client_t),(list_copy_t)copy_client,(list_destroy_t)destroy_client))!= OK){
 		return st;
 	}
-
+	
 	if((st = fill_client_list(&client_list,ws->config_file))!= OK){
 		ADT_List_destroy(&client_list);
 		return st;
 	}
 	
-
 	if((st = ADT_List_create(&operation_list,STR_LEN,(list_copy_t)copy_operation,(list_destroy_t)destroy_operation))!= OK){
 		ADT_List_destroy(&client_list);
 		return st;
@@ -68,6 +64,8 @@ int ADTWS_valid_operation(ADTWS* ws){
 		return ERROR_INVALID_OPERATION;
 	}
 
+	
+
 	return OK;
 }
 
@@ -77,8 +75,6 @@ int ADTWS_consume(ADTWS* ws){
 	
 	int st;
 		
-	
-
 	if((st = ADTWS_valid_operation(ws))!= OK){
 		ADTWS_Op_set_response(&ws->operation_t,"error_msg[st]");
 		return st;
@@ -105,6 +101,8 @@ int ADTWS_set_config_file(ADTWS* ws){
 	char* str;
 
 	ADTWS_Op_get_domain(&str,ws->operation_t);
+
+	strcat(str,".conf");
 
 	ws->config_file = str;	
 
@@ -167,11 +165,12 @@ int fill_client_list(list_t* client_list, const char* config_file){
 	if(client_list == NULL){
 		return ERROR_NULL_POINTER;
 	}
-
+	
 	if((st = get_file_path(&client_file_path,config_file,CLIENT_PATH_POSITION))!= OK){
 		return st;
 	}
-
+	
+	
 	if((fp = fopen(client_file_path,"rt")) == NULL){
 		return ERROR_OPENING_FILE;
 	}
@@ -213,7 +212,7 @@ int get_file_path(char** path, const char* config, int file_pos){
 
 	FILE* fp;
 	char str[STR_LEN];
-	int i;
+	int i = 0;
 
 	if (config == NULL){
 		return ERROR_NULL_POINTER;
@@ -223,13 +222,14 @@ int get_file_path(char** path, const char* config, int file_pos){
 		return ERROR_OPENING_FILE;
 	}
 
-	while(!feof(fp)){
-		if(fgets(str,sizeof(str),fp) == NULL) break;
+	
+	while(fgets(str,sizeof(str),fp)!= NULL){
 		if(i == file_pos){
 			if((*path = strdup(str)) == NULL){
 				fclose(fp);
 				return ERROR_MEMORY_SHORTAGE;
 			}
+			(*path)[strcspn(*path,"\n")] = 0;
 			fclose(fp);
 			return OK;
 		} 

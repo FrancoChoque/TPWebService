@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "operation.h"
 #include "errors.h"
 #include "utils.h"
 #include "ADT_List.h"
@@ -11,9 +12,12 @@
 #include "ADT_Queue.h"
 #include "ADTWS_Op.h"
 
-#define CLIENT_PATH_POSITION 0
-#define OPERATION_PATH_POSITION 1
+#define OPERATION_PATH_POSITION 0
+#define CLIENT_PATH_POSITION 1
 #define LOG_PATH_POSITION 2
+
+
+#define FORMAT_CHOP 20
 
 typedef struct{
 	ADTWS_Op operation_t;
@@ -24,16 +28,20 @@ typedef struct{
 }ADTWS;
 
 
-int ADTWS_create(ATDWS*, ADTWS_Op);
-int ADTWS_valid_operation(ADTWS);
-int ADTWS_consume(ADTWS*);
+typedef int(*operate_t)(ADTWS*);
+
+
+int ADTWS_create(ADTWS*, ADTWS_Op);
 int ADTWS_destroy (ADTWS*);
+int ADTWS_valid_operation(ADTWS*);
+int ADTWS_consume(ADTWS*);
+int ADTWS_set_config_file(ADTWS*);
 
 
+typedef void (*modify_string_t)(char*,const char*, const char*);
+
+int get_file_path(char**, const char*, int);
 
 
-int fill_operation_list(list_t*, const char*);
-int fill_client_list(list_t*, const char*);
-int get_file_path(char*, const char*, int);
-
+int log_operation(ADTWS);
 #endif

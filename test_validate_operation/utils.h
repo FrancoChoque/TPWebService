@@ -9,7 +9,7 @@
 #define CSV_DELIM ';'
 #define INIT_CHOP 1
 
-int concat_str_array(int, const char**, char*);
+int concat_str_array(int, const char**, char**);
 char* strdup(const char*);
 int split_csv_string(char*, char***, int*);
 void destroy_string_array(char**, int);

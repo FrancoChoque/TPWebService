@@ -1,7 +1,0 @@
-ADTWS_Op.o ADTWS_Op.deps : ADTWS_Op.c ADTWS_Op.h errors.h utils.h
-
-ADTWS_Op.h:
-
-errors.h:
-
-utils.h:

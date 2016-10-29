@@ -14,17 +14,15 @@ int ADTWS_Op_create(ADTWS_Op* op, int argc, const char** argv){
 		return ERROR_NULL_POINTER;
 	}
 
-	
-
 	if((st = ADTWS_Op_set_request(op,argc,argv))!= OK){
 		return st;
 	}	
-	printf("s\n");	
+	
 	if((st = ADTWS_Op_set_operation(op))!= OK){
 		ADTWS_Op_destroy(op);
 		return st;
 	}
-
+	
 	if((st = ADTWS_Op_set_format(op))!= OK){
 		ADTWS_Op_destroy(op);
 		return st;
@@ -34,6 +32,7 @@ int ADTWS_Op_create(ADTWS_Op* op, int argc, const char** argv){
 		ADTWS_Op_destroy(op);
 		return st;
 	}
+
 
 	return OK; 
 
@@ -85,15 +84,17 @@ concat_args() está en la biblioteca utils*/
 int ADTWS_Op_set_request(ADTWS_Op* op, int arr_len, const char** arr){
 
 	int st;
+	
 
 	if(op == NULL || arr == NULL){
 		return ERROR_NULL_POINTER;
-	}
+	}	
 
-	if((st = concat_str_array(arr_len,arr,op->request))!= OK){
+	if((st = concat_str_array(arr_len,arr,&op->request))!= OK){
 		return st;
 	}
-	
+
+
 	return OK;
 }
 
@@ -108,10 +109,10 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((st = ADTWS_Op_get_url(&str,*op))!= OK){
+	if((st = ADTWS_Op_get_url(&url,*op))!= OK){
 		return st;
 	}
-
+	
 	if((st = parse_url(&str,url,URL_FIELD_OPERATION))!= OK){
 		free(url);
 		return st;
@@ -129,7 +130,7 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 int ADTWS_Op_set_format(ADTWS_Op* op){
 
 	int st;
-	char* str;
+	char *str,*aux;
 
 	if(op == NULL){
 		return ERROR_NULL_POINTER;
@@ -139,8 +140,8 @@ int ADTWS_Op_set_format(ADTWS_Op* op){
 		return st;
 	}
 	
-	if(strstr(str,TYPE_JASON) == NULL){
-		if(strstr(str,TYPE_XML) == NULL){
+	if((aux = strstr(str,TYPE_JASON)) == NULL){
+		if((aux = strstr(str,TYPE_XML)) == NULL){
 			free(str);
 			return ERROR_UNSUPPORTED_CONTENT_TYPE;
 		}
@@ -154,10 +155,9 @@ int ADTWS_Op_set_format(ADTWS_Op* op){
 
 	free(str);
 
-	if((op->format = strdup(TYPE_XML)) == NULL){
+	if((op->format = strdup(TYPE_JASON)) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
-
 	return OK;
 }
 
@@ -177,7 +177,7 @@ int ADTWS_Op_set_operation_time(ADTWS_Op* op){
 		return st;
 	}
 
-	if ((op->operation_time = strdup(current_time)) == NULL){
+	if ((op->operation_time = strdup("current_time")) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
@@ -257,7 +257,7 @@ int ADTWS_Op_get_data(char** data, ADTWS_Op op){
 
 int ADTWS_Op_get_url(char** url, ADTWS_Op op){
 
-	*url = strdup("http:// SERVERTP1GRUPAL:8888/get_all_operations/");
+	*url = strdup("http://SERVERTP1GRUPAL:8888/validate_operation/");
 
 	return OK;
 }
@@ -299,7 +299,7 @@ int parse_url(char** str, const char* url, int field){
 	if((temp = strdup(url)) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
-
+	
 	for(aux = temp, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
 
 	if((*str = strdup(aux2)) == NULL){
@@ -325,7 +325,6 @@ int parse_request(char** str, const char* request, char* flag){
 
 	
 	char *aux,*aux2,*temp;
-	int i;
 	char delims[] = {REQUEST_DELIM,'\0'}; 
 
 
@@ -336,17 +335,22 @@ int parse_request(char** str, const char* request, char* flag){
 	if((temp = strdup(request)) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
+	
 
-	for(aux = temp, i = 0; (strcmp(aux,flag)) && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
-
+	for(aux = temp; ((aux2 = strtok(aux,delims))!= NULL) && (strcmp(aux2,"-H")); aux = NULL);
+	
+	aux2 = strtok(aux,delims);
+	
+	aux = NULL;
+	
 	if((*str = strdup(aux2)) == NULL){
 		free(temp);
-		temp = NULL;
+		aux2 = temp = NULL;
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
 	free(temp);
-	temp = NULL;	
+	aux2 = temp = NULL;	
 	
 	return OK;
 }
@@ -367,7 +371,7 @@ void strtojason(char* dest, const char* str){
 	
 
 	sprintf(dest,"<%s>%s</%s>",XML_OPERATION,str,XML_OPERATION);
-	printf("s\n");
+	
 
 	return;
 }

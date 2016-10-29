@@ -1,5 +1,0 @@
-ADT_Queue.o ADT_Queue.deps : ADT_Queue.c ADT_Queue.h errors.h
-
-ADT_Queue.h:
-
-errors.h:

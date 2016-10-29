@@ -1,0 +1,5 @@
+current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation ;
+(null)current_time;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation ;
+(null)

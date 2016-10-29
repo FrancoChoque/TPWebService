@@ -3,16 +3,27 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "errors.h"
+#include "utils.h"
 
-#define STR_LEN 20;
-#define MAX_STR_LEN 140;
+#define STR_LEN 20
+#define MAX_STR_LEN 140
 #define CLIENT_ID "id"
 #define CLIENT_NAME "Name"
 #define CLIENT_SURNAME "Surname"
 #define CLIENT_TELEPHONE "Telephone"
 #define CLIENT_MAIL "Mail"
 #define CLIENT_DATE "Time"
+
+
+#define CLIENT_FIELD_ID 0
+#define CLIENT_FIELD_NAME 1
+#define CLIENT_FIELD_SURNAME 2
+#define CLIENT_FIELD_PHONE 3
+#define CLIENT_FIELD_MAIL 4
+#define CLIENT_FIELD_DATE 5
 
 
 typedef struct{
@@ -27,7 +38,7 @@ typedef struct{
 
 
 
-int destroy_client(void*);
+void destroy_client(void*);
 int compare_client(const void*, const void*);
 int copy_client(void*, const void*);
 

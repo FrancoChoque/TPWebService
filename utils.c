@@ -18,9 +18,8 @@ char* strdup(const char* s){ /*Copia string*/
 
 
 /*copia un arreglo de strings en un solo string*/
-int concat_str_array(int len, const char** arr, char* dest){ 
+int concat_str_array(int len, const char** arr, char** dest){ 
 
-	char* aux;
 	unsigned int i;
 
 
@@ -28,40 +27,37 @@ int concat_str_array(int len, const char** arr, char* dest){
 		return ERROR_NULL_POINTER;
 	}
 
-	if((dest = (char*) malloc (INIT_CHOP)) == NULL){ 
+	if((*dest = (char*) malloc (INIT_CHOP)) == NULL){ 
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
-	for (i = 0; i < len; i++){
-		if((aux = (char*) malloc (strlen(arr[i])+1)) == NULL){
-			free(dest);
-			return ERROR_MEMORY_SHORTAGE;
-		}	
-		strcpy(aux,arr[i]);
-		if((dest = (char*) realloc (dest,strlen(dest)+strlen(aux)+1)) == NULL){
-			free(aux);
-			free(dest);
+	for (i = 0; i < len -1; i++){
+			
+		if((*dest = (char*) realloc (*dest,strlen(*dest)+strlen(arr[i])+1)) == NULL){
 			return ERROR_MEMORY_SHORTAGE;
 		}
-		strcat(dest,aux);	
-		strcat(dest," ");
+		strcat(*dest,arr[i]);	
+		strcat(*dest," ");
 	}
 
-	free(aux);
+	if((*dest = (char*) realloc (*dest,strlen(*dest)+strlen(arr[i])+1)) == NULL){
+			return ERROR_MEMORY_SHORTAGE;
+		}
+	strcat(*dest,arr[i]);
 	
 	return OK;
 }
 
 
-/*agarra un string en formato csv y reparte los campos en un arreglo de strings
-ej: recibe: 2;JUANA;GOMEZ;5555-5555;juana@gomez.com.ar;16/09/2016 10:24:53
-devuelve: fieldv[0] = 2 fieldv[1] = JUANA fieldv[2] = GOMEZ ...etc */
+/*agarra un string de un csv y reparte los campos en un arreglo de strings
+ej: recibe 2;JUANA;GOMEZ;5555-5555;juana@gomez.com.ar;16/09/2016 10:24:53
+devuelve fieldv[0] = 2 fieldv[1] = JUANA fieldv[2] = GOMEZ ...etc */
 
 int split_csv_string(char* str, char*** fieldv, int* fieldc){ 
 
 	char *p, *q;
 	int i;
-	char dels[] = {DELIM, '\0'};
+	char dels[] = {CSV_DELIM, '\0'};
 
 	
 	if(str == NULL || fieldv == NULL || fieldc == NULL){
@@ -71,7 +67,7 @@ int split_csv_string(char* str, char*** fieldv, int* fieldc){
 	(*fieldc) = 0;
 	
 	for(i = 0; str[i]!= '\0'; i++){
-		if(str[i] == DELIM){
+		if(str[i] == CSV_DELIM){
 			(*fieldc)++;
 		}
 	}

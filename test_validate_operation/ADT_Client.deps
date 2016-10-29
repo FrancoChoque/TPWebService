@@ -1,7 +1,0 @@
-ADT_Client.o ADT_Client.deps : ADT_Client.c ADT_Client.h errors.h utils.h
-
-ADT_Client.h:
-
-errors.h:
-
-utils.h:

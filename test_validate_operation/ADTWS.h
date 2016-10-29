@@ -12,8 +12,8 @@
 #include "ADT_Queue.h"
 #include "ADTWS_Op.h"
 
-#define CLIENT_PATH_POSITION 0
-#define OPERATION_PATH_POSITION 1
+#define OPERATION_PATH_POSITION 0
+#define CLIENT_PATH_POSITION 1
 #define LOG_PATH_POSITION 2
 
 

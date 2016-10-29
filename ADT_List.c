@@ -70,7 +70,7 @@ int ADT_List_get_node (const list_t* list, void* data){
 
 	int st;
 
-	if(list == NULL || data == NULL){
+	if(list == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
@@ -268,7 +268,7 @@ int build_node(node_t** node, size_t size, const void* data, list_copy_t copy){
 	
 	if(((*node) = (node_t*) malloc(sizeof(node_t))) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
-		
+	}	
 	
 	if(((*node)->data = (void*) malloc (size)) == NULL){
 		free(*node);

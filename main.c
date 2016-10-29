@@ -1,7 +1,7 @@
 #include "main.h"
 
-
-
+void log_error(int);
+void show_usage(void);
 
 int main(int argc, char* argv[]){
 
@@ -17,26 +17,27 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	if((st = ADTWS_Op_create(operation,argc,argv))!= OK){		
+	if((st = ADTWS_Op_create(&operation,argc, (const char**) argv))!= OK){		
 		log_error(st);
 		return EXIT_FAILURE;
 	}
-
-	if((st = ADTWS_create(web_service))!= OK){
+	
+	if((st = ADTWS_create(&web_service,operation))!= OK){
 		log_error(st);
-		ADTWS_Op_destroy(operation);
+		ADTWS_Op_destroy(&operation);
+		return EXIT_FAILURE;
+	}
+	
+	if((st = execute_operation(&web_service))!= OK){
+		log_error(st);
+		ADTWS_Op_destroy(&operation);
+		ADTWS_destroy(&web_service);
 		return EXIT_FAILURE;
 	}
 
-	if((st = execute_operation(operation))!= OK){
-		log_error(st);
-		ADTWS_Op_destroy(operation);
-		ADTWS_destroy(web_service);
-		return EXIT_FAILURE;
-	}
-
-	ADTWS_destroy(web_service);
-	ADTWS_Op_destroy(operation);
+	ADTWS_destroy(&web_service);
+	ADTWS_Op_destroy(&operation);
+	
 
 	return OK;
 }
@@ -51,7 +52,7 @@ int validate_arguments(int argc, char** argv){
 	}
 
 	if(argc < MIN_ARGS){
-		return INVALID_ARGUMENTS;
+		return ERROR_INVALID_ARGUMENTS;
 	}
 
 	return OK;
@@ -61,21 +62,31 @@ int validate_arguments(int argc, char** argv){
 
 int execute_operation(ADTWS* ws){
 
-	FILE* config_file;
-	
+	int st;	
 
-	if(web_service == NULL || operation == NULL){
+	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-
-	if((st = ADTWS_consume(operation))!= OK){
-		log_operation(ws->operation_t);
-		return INVALID_OPERATION
+	if((st = ADTWS_consume(ws))!= OK){
+		log_operation(*ws);
+		return ERROR_INVALID_OPERATION;
 	}
 
-	log_operation(ws->operation_t);
+	log_operation(*ws);
 
 	return OK;
 }
 
+
+
+void log_error(int st){
+
+	
+	return;
+}
+
+void show_usage(void){
+
+	return;
+}
