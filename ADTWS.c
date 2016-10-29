@@ -6,15 +6,21 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 	list_t client_list, operation_list;
 	queue_t operation_queue;
 
+	
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
+
+	ws->operation_t = op;
+
+	ADTWS_set_config_file(ws,op->);
+
 
 	if((st = ADT_List_create(&client_list,sizeof(client_t),(list_copy_t)copy_client,(list_destroy_t)destroy_client))!= OK){
 		return st;
 	}
 
-	if((st = fill_client_list(&client_list))!= OK){
+	if((st = fill_client_list(&client_list,ws->config_file))!= OK){
 		ADT_List_destroy(&client_list);
 		return st;
 	}
@@ -26,7 +32,7 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 	}
 
 
-	if((st = fill_operation_list(&opearation_list))!= OK){
+	if((st = fill_operation_list(&operation_list))!= OK){
 		ADT_List_destroy(&client_list);
 		ADT_List_destroy(&operation_list);
 		return st;
@@ -41,7 +47,6 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 
 	ADTWS->client_list = client_list;
 	ADTWS->operation_list = operation_list;
-	ADTWS->operation_t = op;
 	ADTWS->execution_queue = operation_queue;
 
 	return OK;			
@@ -49,14 +54,16 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 
 
 
-int ADTWS_valid_operation(ADTWS* ws){
+int ADTWS_valid_operation(ADTWS ws){
 
 	
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-	if(search_list((void*) ADTWS_Op_get_operation(ws->operation_t), ws->operation_list,(list_compare_t)compare_operation)){
+	
+
+	if(search_list((void*) ADTWS_Op_get_operation(ws.operation_t), &ws.operation_list,(list_compare_t)compare_operation)){
 		return INVALID_OPERATION;
 	}
 
@@ -70,6 +77,10 @@ int ADTWS_consume(ADTWS* ws){
 
 	op = ADTWS_Op_get_operation(ws->operation_list);
 
+	if((st = ws_operation(ws))!= OK){
+		ADTWS_Ops_set_response(ws->operation_tmerror_msg[st]);
+		return st;
+	}
 	
 
 
@@ -83,7 +94,7 @@ int ADTWS_destroy(ADTWS* ws){
 		return ERROR_NULL_POINTER:
 	}
 
-	
+	return OK;
 
 }
 
@@ -92,17 +103,19 @@ int ADTWS_destroy(ADTWS* ws){
 
 
 
-
-
-int fill_operation_list(list_t* operation_list){
+int fill_operation_list(list_t* operation_list, const char* config_file){
 
 	FILE* fp;
 
-	char str[STR_LEN];
+	char str[STR_LEN], *operation_file;
 	
 
 	if(operation_list == NULL){
 		return ERROR_NULL_POINTER;
+	}
+
+	if((st = get_file_path(&operation_file,config_file,OPERATION_PATH_POSITION))!= OK){
+		return st;
 	}
 
 	if((fp = fopen(operation_file_path,"rt")) == NULL){
@@ -112,11 +125,14 @@ int fill_operation_list(list_t* operation_list){
 	while(!feof(fp)){
 		if((fgets(str,sizeof(str),fp)) == NULL) break;
 		if((st = ADT_List_insert_node(operation_list,mov_next,(void*)str))!= OK){
+			free(operation_file);
 			fclose(fp);
 			return st;
 		}
 	}
 	
+	free(operation_file);
+
 	if(fclose(fp) == EOF){
 		return ERROR_DISK_SPACE;
 	}
@@ -126,16 +142,21 @@ int fill_operation_list(list_t* operation_list){
 
 
 
-int fill_client_list(list_t* client_list){
+int fill_client_list(list_t* client_list, const char* config_file){
 
 	client_t client;
 	FILE* fp;
 	char str[MAX_STR_LEN]; 
-	char *temp, **fieldv;
+	char *client_file_path, *temp, **fieldv;
 	int fieldc;
+
 
 	if(client_list == NULL){
 		return ERROR_NULL_POINTER;
+	}
+
+	if((st = get_file_path(&client_file_path,config_file,CLIENT_PATH_POSITION))!= OK){
+		return st;
 	}
 
 	if((fp = fopen(client_file_path,"rt")) == NULL){
@@ -145,7 +166,7 @@ int fill_client_list(list_t* client_list){
 	while(!feof(fp)){
 
 		if((fgets(str,sizeof(str),fp)) == NULL) break;
-		if((st = split_csv_string(str,&fieldv,&fieldc))!= OK){ /*split_csv_string() está en utils.c*/
+		if((st = split_csv_string(str,&fieldv,&fieldc))!= OK){ 
 			return st;
 			fclose(fp);
 		}
@@ -159,12 +180,12 @@ int fill_client_list(list_t* client_list){
 			destroy_string_array(fieldv,fieldc);
 			free(fieldv);
 			fieldv = NULL;
-			fclose(csv_file);
+			fclose(fp);
 			return st;
 		}
 	}
 
-	destroy_string_array(fieldv,fieldc); /*también está en utils.c*/
+	destroy_string_array(fieldv,fieldc); 
 	free(fieldv);
 	fieldv = NULL;
 	if(fclose(fp) == EOF){
@@ -176,4 +197,33 @@ int fill_client_list(list_t* client_list){
 
 
 
+int get_file_path(char* path, const char* config, int file_pos){
 
+	FILE* fp;
+	char str[STR_LEN],*temp;
+	int i;
+	file_paths path;
+
+	if (url == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if((fp = fopen(config_file,"rt")) == NULL){
+		return ERROR_OPENING_FILE;
+	}
+
+	while(!feof(fp)){
+		fgets(str,sizeof(str),fp);
+		if(i == file_pos){
+			if((path = strdup(str)) == NULL){
+				fclose(fp);
+				return ERROR_MEMORY_SHORTAGE;
+			}
+			fclose(fp);
+			return OK;
+		} 
+		i++;
+	}
+	fclose(fp);
+	return ERROR_MISSING_FILE;
+}	

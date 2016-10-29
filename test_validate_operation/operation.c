@@ -45,10 +45,13 @@ int compare_operation(const void* a, const void* b){
 	str_a = (char*) a;
 	str_b = (char*) b;
 
-	return strcmp(a,b);
+	return strcmp(str_a,str_b);
 }
 
 
+
+
+/*
 
 int get_time(ADTWS* ws){
 
@@ -72,7 +75,7 @@ int get_time(ADTWS* ws){
 	
 	strftime(time_string,STR_LEN,"%d/%m/%Y %H:%M:%S",display);
 	
-	print_format(response,time_string); /*xml/jason*/
+	print_format(response,time_string); /*xml/jason*//*
 
 	if((st = ADTWS_Op_set_response(ADTWS->operation,response))!= OK){
 		return st;
@@ -83,7 +86,7 @@ int get_time(ADTWS* ws){
 }
 
 
-
+/*
 
 int get_client_by_id(ADTWS* ws){
 
@@ -143,7 +146,7 @@ int set_client_by_id(ADTWS* ws){
 		}
 	}
 
-	str = print_client(&client); /*xml/jason*/
+	str = print_client(&client);
 
 	if((st = ADTWS_Op_set_response(ADTWS->operation_t,str))!= OK){
 		free(str);
@@ -170,13 +173,13 @@ int get_max_id_client(ADTWS* ws){
 
 	
 
-	while(move_current(mov_next) == TRUE); /*Me voy al final de la lista*/
+	while(move_current(mov_next) == TRUE); /*Me voy al final de la lista*//*
 
 	if((st = ADT_List_get_node(ws,(void*)&client))!= OK){
 		return st;
 	}
 	
-	str = print_as(&client); /*xml/jason*/
+	str = modify(&client);
 
 	if((st = ADTWS_Op_set_response(ws->operation_t,str))!= OK){
 		return st;
@@ -204,7 +207,7 @@ int set_max_id_client(ADTWS* ws){
 		return st;
 	}
 	
-	str = print_as(&client); /*xml/jason*/
+	str = modify(&client); 
 	
 	if((st = ADTWS_Op_set_response(ws->operation_t,str))!= OK){
 		return st;
@@ -218,14 +221,15 @@ int set_max_id_client(ADTWS* ws){
 int get_all_clients(ADTWS* ws){
 
 	client_t client;
+	modify_strint_t modify;
 
-	char* aux, *str;
+	char *aux, *str;
 
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-	/*FALTA PEDIR MEMORIA PARA aux*/
+	/*FALTA PEDIR MEMORIA PARA aux*//*
 
 	move_current(ws->client_list,mov_first);
 
@@ -235,7 +239,7 @@ int get_all_clients(ADTWS* ws){
 			aux = NULL;
 			return st;
 		}
-		aux = print_as(&client); /*xml/jason*/
+		aux = modify(&client); 
 		if((str = (char*) realloc(str,strlen(aux))) == NULL){
 			free(aux);
 			return ERROR_MEMORY_SHORTAGE;
@@ -255,101 +259,13 @@ int get_all_clients(ADTWS* ws){
 
 
 
-
-
-int get_all_operations(ADTWS* ws){
-
-	
-	char *response,*str,*xml_str;
-
-	if(ws == NULL){
-		return ERROR_NULL_POINTER;
-	}
-
-	if((str = (char*) malloc(ws->operation_t->data_size)) == NULL){ /*abstraction rape*/
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	if((xml_str = (char*) malloc(strlen(str)+FORMAT_CHOP)) == NULL){
-		free(str);
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	if((response = (char*) malloc(INIT_CHOP)) == NULL){
-		free(str);
-		free(xml_str);
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	move_current(ws,mov_first);
-	
-	do{
-		if((st = ADT_List_get_node(ws,(void*)str)) == NULL){
-			free(str);
-			free(xml_str);
-			free(response);
-		}
-		print_as(xml_str,str); /*xml/jason*/
-		if((response = (char*) realloc(response,strlen(response)+strlen(xml_str))) == NULL){
-			free(str);
-			free(xml_str);
-			free(response);
-			return ERROR_MEMORY_SHORTAGE; 
-		}
-		strcat(response,xml_str);	
-	}while(move_current(list,mov_next) == OK);
-
-	if((st = ADTWS_Op_set_response(ws->operation_t,str))!= OK){
-		free(str);
-		free(xml_str);
-		free(response);
-		return st;
-	}
-
-	free(str);
-	free(xml_str);
-
-	return OK;
-}
+*/
 
 
 
 
 
 
-int log_operation(ADTWS_Op op){
-
-	char* path;
-	int st;
-
-	if((st = get_operation_path(path))!=OK){
-		return st;
-	}
-
-	if((fp = fopen(path,"a")) == NULL){
-		return ERROR_OPENING_FILE;
-	}
-
-	fprintf(fp,"%s;%s;\n%s;\n%s",op.operation_time,op.operation,op.request,op.response);
-
-	if(fclose(fp) == EOF){
-		return ERROR_DISK_SPACE;
-	}
-
-	return OK;
-}
-
-
-
-
-void operation_to_xml(char* str){
-
-
-}
-
-void operation_to_jason(char* str){
-
-}
 
 
 

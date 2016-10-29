@@ -7,8 +7,8 @@ int main(int argc, char* argv[]){
 
 	int st;
 
-	ADTWS_Op* operation;
-	ADTWS* web_service;
+	ADTWS_Op operation;
+	ADTWS web_service;
 
 	
 	if((st = validate_arguments(argc,argv))!= OK){
@@ -17,13 +17,7 @@ int main(int argc, char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	
-	if((st = ADTWS_Op_create(argc,argv,operation))!= OK){		
-		log_error(st);
-		return EXIT_FAILURE;
-	}
-
-	if((st = set_file_paths(ADTWS_Ops_get_url(operation)))!= OK){
+	if((st = ADTWS_Op_create(operation,argc,argv))!= OK){		
 		log_error(st);
 		return EXIT_FAILURE;
 	}
@@ -75,10 +69,9 @@ int execute_operation(ADTWS* ws){
 	}
 
 
-
 	if((st = ADTWS_consume(operation))!= OK){
-		log_operation(msg_error[st]);
-		return FAILED_OPERATION;
+		log_operation(ws->operation_t);
+		return INVALID_OPERATION
 	}
 
 	log_operation(ws->operation_t);
@@ -86,31 +79,3 @@ int execute_operation(ADTWS* ws){
 	return OK;
 }
 
-
-int set_file_paths(char* url){
-
-	FILE* fp;
-	char *temp;
-	int i;
-
-	if (url == NULL){
-		return ERROR_NULL_POINTER;
-	}
-
-	parse_request(url,&temp,REQUEST_FIELD_DOMAIN);
-
-	config_file = strtok(temp,':');
-
-	strcat(config_file,".conf");
-
-	fp = fopen(config_file,"rt");
-
-	for(i = 0; !feof(fp); i++){
-		if(fgets(str,sizeof(str),fp) == NULL) break;
-		file_paths[i] = strdup(str);
-	}
-
-	return OK;
-
-
-}

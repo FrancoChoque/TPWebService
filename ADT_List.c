@@ -226,7 +226,9 @@ int ADT_List_update(list_t* list, const void* data) {
 int ADT_List_search(list_t* list, void* node, list_compare_t compare){
 
 
-	move_current(list,mov_first);
+	if(compare(node,list->current->data) < 0){
+		move_current(list,mov_first);
+	}
 
 	do{
 		if(!compare(node,list->current->data)){

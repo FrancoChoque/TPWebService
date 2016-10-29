@@ -1,6 +1,6 @@
 #include "ADTWS_Op.h"
 
-int parse_request(const char*, char**);
+int parse_url(const char*, char**);
 int parse_format_header(const char*, char**);
 
 
@@ -109,7 +109,7 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 	/*Acá falta el algoritmo que agarra el campo request del ADTWS_Op
 	y copia el url (https://...etc) en el char* url */
 
-	if((st = parse_request(url,&op->operation,REQUEST_FIELD_OPERATION))!= OK){
+	if((st = parse_url(url,&op->operation,REQUEST_FIELD_OPERATION))!= OK){
 		return st;
 	}
 
@@ -121,7 +121,7 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 
 
 
-int ADTWS_Op_set_format(ADTWS_Op* op, int len, const char** request){
+int ADTWS_Op_set_format(ADTWS_Op* op){
 
 	int i, st;
 	char* str;
@@ -130,16 +130,13 @@ int ADTWS_Op_set_format(ADTWS_Op* op, int len, const char** request){
 		return ERROR_NULL_POINTER;
 	}
 
-	for(i = 0; i < len; i++){
-		if(!strcmp(request[i],FORMAT_FLAG)){ 
-			if((st = parse_request(request[i+1],&op->format,REQUEST_FIELD_FORMAT))!= OK){
-				return st;
-			}
-			return OK; 
-		}	
+	parse_request(str,FORMAT_FLAG);
+	
+	if((st = parse_url(str,&op->format,FIELD_METHOD_FORMAT))!= OK){
+		return st;
 	}
 
-	return ERROR_INVALID_FORMAT;
+	return OK;
 }
 
 
@@ -195,13 +192,26 @@ char* ADTWS_Op_get_response(ADTWS_Op op){
 }
 
 
-/*esta función copia en op_name el nombre de la operación que está en argv
-por ej: le paso "https://algodetp.com/getTime" y copia "getTime" en op_name
-le paso "https://algodetp.com/getClientbyID/1" y copia "getClientbyID" en op_name
-edit: le metí el int field para hacerla genérica y obtener cualquier campo
+
+
+int ADTWS_Op_get_data(ADTWS_Op op,){
+
+   	char* str = strdup(strstr(op.response, REQUEST_FLAG_DATA));
+
+   	return str;
+}
+
+char* ADTWS_Op_get_url(ADTWS_Op op){
+
+
+}
+
+/*esta función copia en str lo que haya en el campo de la url especificado por field
+por ej: le paso "https://algodetp.com/getTime" y field = 3 y copia "getTime" en str
+le paso "https://algodetp.com/getClientbyID/1" y field = 4 y copia "1" en str
 */
 
-int parse_request(const char* request, char** str, int field){
+int parse_url(const char* url, char** str, int field){
 
 	
 	char *aux,*aux2,*temp;
@@ -217,7 +227,7 @@ int parse_request(const char* request, char** str, int field){
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
-	for(aux = request, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
+	for(aux = url, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
 
 	if((*str = strdup(aux2)) == NULL){
 		free(temp);
@@ -232,8 +242,37 @@ int parse_request(const char* request, char** str, int field){
 }
 
 
-int parse_request_data(const char* request, char** str, char* flag){
+
+int parse_request(const char* request, char** str, char* flag){
+
+	
+	char *aux,*aux2,*temp;
+	int i;
+	char delims[] = {' ','\0'}; 
 
 
+	if(url == NULL){
+		return ERROR_NULL_POINTER;
+	}	
+
+	if((temp = strdup(url)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	for(aux = url, i = 0; (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++){
+		;
+
+	if((*str = strdup(aux2)) == NULL){
+		free(temp);
+		temp = NULL;
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	free(temp);
+	temp = NULL;	
+	
+	return OK;
 }
+
+
 

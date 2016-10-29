@@ -1,0 +1,20 @@
+main.o main.deps : main.c main.h ADTWS_Op.h errors.h utils.h ADTWS.h operation.h \
+ ADT_List.h ADT_Client.h ADT_Queue.h
+
+main.h:
+
+ADTWS_Op.h:
+
+errors.h:
+
+utils.h:
+
+ADTWS.h:
+
+operation.h:
+
+ADT_List.h:
+
+ADT_Client.h:
+
+ADT_Queue.h:

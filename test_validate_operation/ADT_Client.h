@@ -3,19 +3,27 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "errors.h"
-#include "string.h"
+#include "utils.h"
 
 #define STR_LEN 20
 #define MAX_STR_LEN 140
-#define FIELD_CLIENT_ID 0
-#define FIELD_CLIENT_NAME 1
-#define FIELD_CLIENT_SURNAME 2
-#define FIELD_CLIENT_PHONE 3
-#define FIELD_CLIENT_MAIL 4
-#define FIELD_CLIENT_DATE 5
-#define DELIM ';'
+#define CLIENT_ID "id"
+#define CLIENT_NAME "Name"
+#define CLIENT_SURNAME "Surname"
+#define CLIENT_TELEPHONE "Telephone"
+#define CLIENT_MAIL "Mail"
+#define CLIENT_DATE "Time"
 
+
+#define CLIENT_FIELD_ID 0
+#define CLIENT_FIELD_NAME 1
+#define CLIENT_FIELD_SURNAME 2
+#define CLIENT_FIELD_PHONE 3
+#define CLIENT_FIELD_MAIL 4
+#define CLIENT_FIELD_DATE 5
 
 
 typedef struct{
@@ -31,10 +39,20 @@ typedef struct{
 
 
 void destroy_client(void*);
-
+int compare_client(const void*, const void*);
 int copy_client(void*, const void*);
 
-int compare_client(const void*, const void*);
+int modify_client_name(void*,void*);
+int modify_client_surname(void*,void*);
+int modify_client_telephone(void*,void*);
+int modify_client_mail(void*,void*);
+int modify_client_date(void*,void*);
+
+
+
+char* print_client_as_jason(const void*);
+char* print_client_as_xml(const void*);
+
 
 
 #endif

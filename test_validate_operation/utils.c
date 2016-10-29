@@ -53,15 +53,15 @@ int concat_str_array(int len, const char** arr, char* dest){
 }
 
 
-/*agarra un string en formato csv y reparte los campos en un arreglo de strings
-ej: recibe: 2;JUANA;GOMEZ;5555-5555;juana@gomez.com.ar;16/09/2016 10:24:53
-devuelve: fieldv[0] = 2 fieldv[1] = JUANA fieldv[2] = GOMEZ ...etc */
+/*agarra un string de un csv y reparte los campos en un arreglo de strings
+ej: recibe 2;JUANA;GOMEZ;5555-5555;juana@gomez.com.ar;16/09/2016 10:24:53
+devuelve fieldv[0] = 2 fieldv[1] = JUANA fieldv[2] = GOMEZ ...etc */
 
 int split_csv_string(char* str, char*** fieldv, int* fieldc){ 
 
 	char *p, *q;
 	int i;
-	char dels[] = {DELIM, '\0'};
+	char dels[] = {CSV_DELIM, '\0'};
 
 	
 	if(str == NULL || fieldv == NULL || fieldc == NULL){
@@ -71,7 +71,7 @@ int split_csv_string(char* str, char*** fieldv, int* fieldc){
 	(*fieldc) = 0;
 	
 	for(i = 0; str[i]!= '\0'; i++){
-		if(str[i] == DELIM){
+		if(str[i] == CSV_DELIM){
 			(*fieldc)++;
 		}
 	}

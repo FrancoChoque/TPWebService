@@ -8,10 +8,11 @@ char* strdup(const char*);
 
 int main (void){
 
-	char str[] = "https://algodetp.com/getClientbyID/1";
+	char str[] = "https://algodetp.com:8080/getClientbyID/1";
+	char str2[] = "\"Content-Type:application/json\"";
 	char* s;
 
-	parse_url(str,&s);
+	parse_url(str2,&s);
 
 	
 	printf("%s\n", s);
@@ -43,7 +44,7 @@ int parse_url(const char* url, char** op_name){
 	char* aux;
 	char* aux2;
 	unsigned int i;
-	char delims[] = {'/','\0'}; 
+	char delims[] = {'/',':','\0'}; 
 	char* temp;
 
 	temp = strdup(url);

@@ -1,0 +1,18 @@
+ADTWS.o ADTWS.deps : ADTWS.c ADTWS.h operation.h errors.h utils.h ADT_List.h \
+ ADT_Client.h ADT_Queue.h ADTWS_Op.h
+
+ADTWS.h:
+
+operation.h:
+
+errors.h:
+
+utils.h:
+
+ADT_List.h:
+
+ADT_Client.h:
+
+ADT_Queue.h:
+
+ADTWS_Op.h:

@@ -1,7 +1,7 @@
 #include "ADT_List.h"
 
 
-int ADT_List_create (list_t* list, size_t size, copy_t copy, destroy_t destroy){
+int ADT_List_create (list_t* list, size_t size, list_copy_t copy, list_destroy_t destroy){
 
 	if(list == NULL){
 		return ERROR_NULL_POINTER;
@@ -61,7 +61,7 @@ int empty_list(list_t *list){
 
 int is_empty (list_t list){
 
-	return (list.first == NULL)? 1:0;
+	return (list.first == NULL);
 }
 
 
@@ -70,7 +70,10 @@ int ADT_List_get_node (const list_t* list, void* data){
 
 	int st;
 
-	
+	if(list == NULL || data == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
 
 	if((st = list->copy(data,list->current->data))!= OK){
 		return st;
@@ -166,7 +169,6 @@ int ADT_List_insert_node(list_t* list, movement_t M, const void* adition){
 	}
 	
 	
-	
 	if((list->first == NULL) || (M == mov_first) || ((M == mov_previous) && (list->first == list->current))){
 		new_node->next = list->first;
 		list->first = list->current = new_node;
@@ -185,6 +187,7 @@ int ADT_List_insert_node(list_t* list, movement_t M, const void* adition){
 	
 	return OK;
 }
+
 
 
 int ADT_List_update(list_t* list, const void* data) {
@@ -212,14 +215,28 @@ int ADT_List_update(list_t* list, const void* data) {
 		return st;
 	}
 
-	
-
 	list->destroy(list->current->data);
 	free(list->current->data);
 	list->current->data = new_data;
 	
 	return OK;
 	
+}
+
+int ADT_List_search(list_t* list, void* node, list_compare_t compare){
+
+
+	if(compare(node,list->current->data) < 0){
+		move_current(list,mov_first);
+	}
+
+	do{
+		if(!compare(node,list->current->data)){
+			return TRUE;
+		}
+	}while(move_current(list,mov_next) == OK);
+	
+	return FALSE;
 }
 
 
@@ -229,9 +246,7 @@ int ADT_List_update(list_t* list, const void* data) {
 /* <private functions> */
 
 
-
-
-void dispose_node(node_t *node, destroy_t destroy){
+void dispose_node(node_t *node, list_destroy_t destroy){
 	
 	if(node == NULL) return;
 	destroy(node->data);
@@ -242,7 +257,7 @@ void dispose_node(node_t *node, destroy_t destroy){
 }
 
 
-int build_node(node_t** node, size_t size, const void* data, copy_t copy){
+int build_node(node_t** node, size_t size, const void* data, list_copy_t copy){
 	
 	int st;
 
@@ -253,7 +268,7 @@ int build_node(node_t** node, size_t size, const void* data, copy_t copy){
 	
 	if(((*node) = (node_t*) malloc(sizeof(node_t))) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
-	}
+	}	
 	
 	if(((*node)->data = (void*) malloc (size)) == NULL){
 		free(*node);

@@ -1,5 +1,7 @@
 #include "ADT_Client.h"
 
+typedef int (*add_client) ( );
+
 int copy_client(void* dest, const void* source){
 
 
@@ -45,7 +47,7 @@ char* print_client_as_xml(const void* c, FILE* fp){
 
 	client = (client_t*) c;
 
-	if(client == NULL) return;
+	if(client == NULL) return NULL;
 
 	sprintf(str,"<Client><%s>%s</%s><%s>%s</%s><%s>%s</%s><%s>%s</%s><%s>%s</%s><%s>%s</%s></Client>\n"
 		CLIENT_ID,client->id,CLIENT_ID,CLIENT_NAME,client->name,
@@ -72,4 +74,16 @@ char* print_client_as_jason(const void* c, FILE* fp){
 
 	
 	return str;
+}
+
+
+
+
+
+int create_client_from_jason(){
+
+}
+
+int create_client_from_xml(){
+
 }
