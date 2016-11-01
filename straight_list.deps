@@ -1,3 +1,0 @@
-straight_list.o straight_list.deps : straight_list.c straight_list.h
-
-straight_list.h:

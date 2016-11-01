@@ -9,7 +9,7 @@
 
 #define OPERATION "operation"
 #define TIME "time"
-#define VALID "valid"
+#define MSG_VALID "valid"
 #define MSG_TRUE "true"
 #define MSG_FALSE "false"
 

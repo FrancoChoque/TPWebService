@@ -69,6 +69,10 @@ int execute_operation(ADTWS* ws){
 		return ERROR_NULL_POINTER;
 	}
 	
+	if((st = ADTWS_valid_operation(ws))!= OK){
+		return st;
+	}
+
 	if((st = ADTWS_consume(ws))!= OK){
 		log_operation(*ws);
 		return ERROR_INVALID_OPERATION;

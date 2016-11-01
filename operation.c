@@ -3,16 +3,9 @@
 
 int destroy_operation(void* op){
 
-	char* str;
-
-	str = (char*) op;
-
 	if(op == NULL){
 		return ERROR_NULL_POINTER;
 	}
-
-	
-	str = NULL;
 
 	return OK;
 }
@@ -185,38 +178,6 @@ int get_max_id_client(ADTWS* ws){
 
 	return OK
 }
-
-
-int set_max_id_client(ADTWS* ws){
-
-	client_t client;
-	char* str;
-	int st;
-
-	if(ws == NULL){
-		return ERROR_NULL_POINTER;
-	}
-
-	client.client_id = id; 
-
-	while(move_current(mov_next) == TRUE);
-	
-	if((st = ADT_List_insert_node(ws,mov_next,(void*)&client))!= OK){
-		return st;
-	}
-	
-	str = modify(&client); 
-	
-	if((st = ADTWS_Op_set_response(ws->operation_t,str))!= OK){
-		return st;
-	}
-
-	return OK;
-
-}
-
-
-
 
 
 */

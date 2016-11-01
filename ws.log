@@ -19,3 +19,93 @@
 31/10/2016 11:42:58;validate_operation;
 ./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
 <id>4</id>
+01/11/2016 00:35:15;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<id>4</id>
+01/11/2016 00:35:29;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<id>4</id>
+01/11/2016 11:28:31;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<id>4</id>
+01/11/2016 11:33:10;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<time>01/11/2016 11:33:10</time>
+01/11/2016 11:33:18;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<?xml version="1.0"encoding="UTF-8"?><Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+01/11/2016 11:49:46;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<time>01/11/2016 11:49:46</time>
+01/11/2016 12:02:10;get_time;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_time;
+<time>01/11/2016 12:02:10</time>
+01/11/2016 12:02:19;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+<?xml version="1.0"encoding="UTF-8"?><Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+01/11/2016 12:02:27;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 12:16:53;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<true>validate_operation</true>
+01/11/2016 12:17:01;validate_operation;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
+{"true": "validate_operation"}
+01/11/2016 12:17:24;get_all_clients;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+01/11/2016 12:21:07;get_all_clients;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+01/11/2016 12:21:12;get_all_operations;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
+{"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
+01/11/2016 12:21:22;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 12:25:18;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 12:27:05;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 13:10:06;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 13:10:41;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<valid>false</valid>
+01/11/2016 13:11:41;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<valid>true</valid>
+01/11/2016 13:11:51;validate_operation;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
+{"valid": "true"}
+01/11/2016 13:12:29;validate_operation;
+./tp -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
+{"valid": "true"}
+01/11/2016 13:12:37;get_all_clients;
+./tp -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+01/11/2016 13:13:05;get_all_clients;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+01/11/2016 13:13:13;get_all_operations;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
+{"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
+01/11/2016 13:13:21;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 14:02:32;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 14:02:48;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 14:16:39;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 14:17:16;get_all_clients;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}

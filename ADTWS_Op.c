@@ -248,6 +248,10 @@ int ADTWS_Op_get_method(char** method, ADTWS_Op op){
 		return st;
 	}
 
+	if(*method == NULL){
+		*method = strdup(METHOD_DEFAULT);
+	}
+
 	return OK;
 }
 
@@ -270,9 +274,13 @@ int ADTWS_Op_get_data(char** data, ADTWS_Op op){
 
 int ADTWS_Op_get_url(char** url, ADTWS_Op op){
 
+	char* temp;
 
+	temp = strstr(op.request,"http");
 
-	*url = strdup("http://SERVERTP1GRUPAL:8888/validate_operation/");
+	if((*url = strdup(temp)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
 
 	return OK;
 }
@@ -349,7 +357,7 @@ int parse_request(char** str, const char* request, char* flag){
 	char delims[] = {REQUEST_DELIM,'\0'}; 
 
 
-	if(request == NULL || flag == NULL){
+	if(request == NULL || flag == NULL || str == NULL){
 		return ERROR_NULL_POINTER;
 	}	
 
@@ -360,7 +368,9 @@ int parse_request(char** str, const char* request, char* flag){
 	for(aux = temp; ((aux2 = strtok(aux,delims))!= NULL) && (strcmp(aux2,flag)); aux = NULL);
 	
 	if(strcmp(aux2,flag)){
-		return ERROR_NOT_FOUND;
+		free(temp);
+		*str = NULL;
+		return OK;
 	}
 
 	aux2 = strtok(aux,delims);
@@ -403,7 +413,7 @@ int get_local_time(char** str_time){
 
 	time_t time_stamp;
 	struct tm* display;
-	char time_string[STR_LEN], *response;
+	char time_string[STR_LEN];
 	
 
 
@@ -421,7 +431,9 @@ int get_local_time(char** str_time){
 	
 	strftime(time_string,STR_LEN,"%d/%m/%Y %H:%M:%S",display);
 	
-	*str_time = strdup(time_string);
+	if((*str_time = strdup(time_string)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
 
 	return OK;
 	

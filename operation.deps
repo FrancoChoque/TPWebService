@@ -1,7 +1,0 @@
-operation.o operation.deps : operation.c operation.h errors.h utils.h
-
-operation.h:
-
-errors.h:
-
-utils.h:

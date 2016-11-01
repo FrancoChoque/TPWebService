@@ -15,7 +15,7 @@
 #define OPERATION_PATH_POSITION 0
 #define CLIENT_PATH_POSITION 1
 #define LOG_PATH_POSITION 2
-#define MAX_OPERATIONS 8
+#define MAX_OPERATIONS 5
 
 #define FORMAT_CHOP 40
 
@@ -29,19 +29,6 @@ typedef struct{
 
 
 typedef int(*operate_t)(ADTWS*);
-
-
-
-/*operate_t operations[MAX_OPERATIONS] = {
-	get_time,
-	get_max_id_client,
-	set_max_id_client,
-	get_client_by_id,
-	set_client_by_id,
-	get_all_clients,
-	get_all_operations,
-	validate_operation
-};*/
 
 
 int ADTWS_create(ADTWS*, ADTWS_Op);
