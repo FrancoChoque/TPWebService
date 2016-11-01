@@ -4,46 +4,55 @@
 int fill_operation_list(list_t*, const char*);
 int fill_client_list(list_t*, const char*);
 int get_all_operations(ADTWS*);
+int get_all_clients(ADTWS*);
+int get_time(ADTWS*);
+int set_max_id_client(ADTWS*);
 
 int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 
 	int st;
 	list_t client_list, operation_list;
 	queue_t operation_queue;
-	
+
 	
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
 
-	ws->operation_t = op;
+	if((st = ADTWS_set_operation(ws,op))!= OK){
+		return st;
+	}
 
-	ADTWS_set_config_file(ws);
+	if((st = ADTWS_set_config_file(ws))!= OK){
+		ADTWS_destroy(ws);
+		return st;
+	}
 
-	if((st = ADT_List_create(&client_list,sizeof(client_t),(list_copy_t)copy_client,(list_destroy_t)destroy_client))!= OK){
+	if((st = straight_list_create(&client_list,sizeof(client_t),(straight_list_copy_t)copy_client,(straight_list_destroy_t)destroy_client))!= RES_OK){
+		ADTWS_destroy(ws);
 		return st;
 	}
 	
 	if((st = fill_client_list(&client_list,ws->config_file))!= OK){
-		ADT_List_destroy(&client_list);
+		ADTWS_destroy(ws);
 		return st;
 	}
 	
-	if((st = ADT_List_create(&operation_list,STR_LEN,(list_copy_t)copy_operation,(list_destroy_t)destroy_operation))!= OK){
-		ADT_List_destroy(&client_list);
+	if((st = straight_list_create(&operation_list,(size_t)STR_LEN,(straight_list_copy_t)copy_operation,(straight_list_destroy_t)destroy_operation))!= RES_OK){
+		ADTWS_destroy(ws);
 		return st;
 	}
-
 
 	if((st = fill_operation_list(&operation_list,ws->config_file))!= OK){
-		ADT_List_destroy(&client_list);
-		ADT_List_destroy(&operation_list);
+		ADTWS_destroy(ws);
 		return st;
 	}
 
-	ADT_Queue_create(&operation_queue,STR_LEN,(queue_copy_t)copy_operation,(queue_destroy_t)destroy_operation);
+	if((st = ADT_Queue_create(&operation_queue,STR_LEN,(queue_copy_t)copy_operation,(queue_destroy_t)destroy_operation))!= OK){
+		ADTWS_destroy(ws);
+		return st;
+	}
 	
-
 	ws->client_list = client_list;
 	ws->operation_list = operation_list;
 	ws->execution_queue = operation_queue;
@@ -56,30 +65,58 @@ int ADTWS_create(ADTWS* ws, ADTWS_Op op){
 int ADTWS_valid_operation(ADTWS* ws){
 
 
-	char *str, *response;
+	char *str, *response, temp[STR_LEN];
+	modify_string_t modify;
+	
 
-	str = strdup(ADTWS_Op_get_operation(ws->operation_t));
+	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
+		modify = (modify_string_t)strtoxml;
+	}else{
+		modify = (modify_string_t)strtojason;
+	} 
+	
+	if((str = strdup(ADTWS_Op_get_operation(ws->operation_t))) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
 
-	if(ADT_List_search(&ws->operation_list,(void*)str,(list_compare_t)compare_operation)){
+	straight_list_move(&ws->operation_list,straight_list_first);
+
+	do{
+		straight_list_get(&ws->client_list,(void*)temp);
+		if(!strcmp(temp,str)) break;
+	}while(straight_list_move(&ws->operation_list,straight_list_next) == TRUE);
+
+	if(strcmp(temp,str)){
+		free(str);
 		return ERROR_INVALID_OPERATION;
 	}
 
-	response = (char*) malloc(20);
+	if((response = (char*) malloc(strlen(str) + FORMAT_CHOP + 1)) == NULL){
+		free(str);
+		return ERROR_MEMORY_SHORTAGE;
+	}
 
-	strtoxml(response,MSG_TRUE,VALID);
+	modify(response,str,MSG_TRUE);
 
-	ADTWS_Op_set_response(&ws->operation_t,response);
+	free(str);
+
+	if((st = ADTWS_Op_set_response(&ws->operation_t,response))!= OK){
+		free(response);
+		return st;
+	}
+
+	free(response);
 
 	return OK;
 }
-
 
 int ADTWS_consume(ADTWS* ws){
 
 	
 	int st;
-		
-	if((st = get_all_operations(ws))!= OK){
+	
+	
+	if((st = set_max_id_client(ws))!= OK){
 		ADTWS_Op_set_response(&ws->operation_t,"error_msg[st]");
 		return st;
 	}
@@ -93,9 +130,61 @@ int ADTWS_destroy(ADTWS* ws){
 	if(ws == NULL){
 		return ERROR_NULL_POINTER;
 	}
+	
+	
+	ADTWS_Op_destroy(&ws->operation_t);
+	
+	
+	if(!straight_list_is_empty(&ws->client_list)){
+		straight_list_destroy(&ws->client_list);
+	}
+	
+	if(!straight_list_is_empty(&ws->operation_list)){
+		straight_list_destroy(&ws->operation_list);
+	}
+	
+	if(!queue_is_empty(ws->execution_queue)){	
+		ADT_Queue_destroy(&ws->execution_queue);
+	}
+	
+	if(ws->config_file != NULL){
+		free(ws->config_file);
+	}
 
 	return OK;
+}
 
+
+int ADTWS_set_operation(ADTWS* ws, ADTWS_Op op){
+
+	
+	if(ws == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if((ws->operation_t.request = strdup(op.request)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	if((ws->operation_t.operation = strdup(op.operation)) == NULL){
+		free(ws->operation_t.request);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	if((ws->operation_t.operation_time = strdup(op.operation_time)) == NULL){
+		free(ws->operation_t.request);
+		free(ws->operation_t.operation);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+	
+	if((ws->operation_t.format = strdup(op.format)) == NULL){
+		free(ws->operation_t.request);
+		free(ws->operation_t.operation);
+		free(ws->operation_t.operation_time);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	return OK;
 }
 
 
@@ -138,13 +227,14 @@ int fill_operation_list(list_t* operation_list, const char* config_file){
 		return ERROR_OPENING_FILE;
 	}
 
-	while(!feof(fp)){
-		if((fgets(str,sizeof(str),fp)) == NULL) break;
+	
+	while((fgets(str,sizeof(str),fp)) != NULL){
+		if(!strcmp(str,"\n")) break;
 		if((operation = strdup(str)) == NULL){
 			return ERROR_MEMORY_SHORTAGE;
 		}
 		operation[strcspn(operation,"\n")] = 0;
-		if((st = ADT_List_insert_node(operation_list,mov_next,(void*)operation))!= OK){
+		if((st = straight_list_insert(operation_list,straight_list_next,(void*)operation))!= TRUE){
 			free(operation);
 			free(operation_file);
 			fclose(fp);
@@ -185,9 +275,9 @@ int fill_client_list(list_t* client_list, const char* config_file){
 		return ERROR_OPENING_FILE;
 	}
 
-	while(!feof(fp)){
-
-		if((fgets(str,sizeof(str),fp)) == NULL) break;
+	while((fgets(str,sizeof(str),fp))!= NULL){
+		if(!strcmp(str,"\n")) break;
+		str[strcspn(str,"\n")] = 0;
 		if((st = split_csv_string(str,&fieldv,&fieldc))!= OK){ 
 			return st;
 			fclose(fp);
@@ -198,7 +288,7 @@ int fill_client_list(list_t* client_list, const char* config_file){
 		strncpy(client.telephone,fieldv[CLIENT_FIELD_PHONE],STR_LEN-1);
 		strncpy(client.mail,fieldv[CLIENT_FIELD_MAIL],STR_LEN-1);
 		strncpy(client.date,fieldv[CLIENT_FIELD_DATE],STR_LEN-1);
-		if((st = ADT_List_insert_node(client_list,mov_next,(void*)&client))!= OK){
+		if((st = straight_list_insert(client_list,straight_list_next,(void*)&client))!= TRUE){
 			destroy_string_array(fieldv,fieldc);
 			free(fieldv);
 			fieldv = NULL;
@@ -232,8 +322,8 @@ int get_file_path(char** path, const char* config, int file_pos){
 		return ERROR_OPENING_FILE;
 	}
 
-	
 	while(fgets(str,sizeof(str),fp)!= NULL){
+		if(!strcmp(str,"\n")) break;
 		if(i == file_pos){
 			if((*path = strdup(str)) == NULL){
 				fclose(fp);
@@ -254,11 +344,87 @@ int get_file_path(char** path, const char* config, int file_pos){
 int get_all_operations(ADTWS* ws){
 
 	
-	char *response,*str,*xml_str,*format;
+	char *response,*raw_str,*format_str;
 	modify_string_t modify;
 	int st;
 	size_t alloc_size;
-	char *str1;
+	
+
+	if(ws == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
+		modify = (modify_string_t)strtoxml;
+	}else{
+		modify = (modify_string_t)strtojason;
+	} 
+	
+
+	if((raw_str = (char*) malloc(STR_LEN)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	if((format_str = (char*) malloc(STR_LEN + FORMAT_CHOP + 1)) == NULL){
+		free(raw_str);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+	
+	if((response = (char*) malloc(INIT_CHOP)) == NULL){
+		raw_str = NULL;
+		free(raw_str);
+		free(format_str);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	*response = '\0';
+		
+	alloc_size = INIT_CHOP;
+	
+	straight_list_move(&ws->operation_list,straight_list_first);
+
+	do{
+		straight_list_get(&ws->operation_list,(void*)raw_str);
+		
+		modify(format_str,raw_str,OPERATION);
+
+		alloc_size += strlen(format_str);
+		
+		if((response = (char*) realloc(response,alloc_size)) == NULL){
+			free(raw_str);
+			free(format_str);
+			return ERROR_MEMORY_SHORTAGE;
+		}
+		
+		strcat(response,format_str);
+
+	}while(straight_list_move(&ws->operation_list,straight_list_next) == TRUE);
+
+	free(raw_str);
+	free(format_str);
+
+	if((st = ADTWS_Op_set_response(&(ws->operation_t),response))!= OK){	
+		free(response);
+		return st;
+	}
+
+	free(response);
+	
+	return OK;
+}
+
+
+
+
+
+
+int get_all_clients(ADTWS* ws){
+
+	client_t client;
+	client_to_string_t modify;
+	int st;
+	size_t alloc_size;
+	char *aux, *response;
 
 	
 
@@ -266,87 +432,131 @@ int get_all_operations(ADTWS* ws){
 		return ERROR_NULL_POINTER;
 	}
 
-	format = strdup(ADTWS_Op_get_format(ws->operation_t));
+	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
+		modify = (client_to_string_t)print_client_as_xml;
+	}else{
+		modify = (client_to_string_t)print_client_as_jason;
+	} 		
+
+	if((response = (char*) malloc(INIT_CHOP)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	*response = '\0';
+		
+	alloc_size = INIT_CHOP;
+
+	straight_list_move(&ws->client_list,straight_list_first);
+
+	do{
+		straight_list_get(&ws->client_list,(void*)&client);
+		if((aux = modify(client)) == NULL){
+			free(response);
+			return ERROR_MEMORY_SHORTAGE;
+		}
+		alloc_size += strlen(aux);
+		if((response = (char*) realloc(response,alloc_size)) == NULL){
+			free(aux);
+			return ERROR_MEMORY_SHORTAGE;
+		} 
+		strcat(response,aux); 
+			
+	}while(straight_list_move(&ws->client_list,straight_list_next) == TRUE);
+
+
+	if((st = ADTWS_Op_set_response(&ws->operation_t,response))!= OK){
+		free(aux);
+		free(response);
+		return st;
+	}
+
+	free(aux);
+	free(response);
+
+	return OK;
+}
+
+
+int get_time(ADTWS* ws){
+
+	char *response;
+	int st;
+	modify_string_t modify;
 	
-	if(!strcmp(format,TYPE_XML)){
+
+
+	if(ws == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
 		modify = (modify_string_t)strtoxml;
 	}else{
 		modify = (modify_string_t)strtojason;
 	} 
 
-	/*if((str = (char*) malloc(30)) == NULL){
+	if((response = (char*) malloc(strlen(ADTWS_Op_get_operation_time(ws->operation_t)) + FORMAT_CHOP + 1)) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
 
-	
-	if((xml_str = (char*) malloc(strlen(str)+FORMAT_CHOP)) == NULL){
-		free(str);
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	if((response = (char*) malloc(INIT_CHOP)) == NULL){
-		free(str);
-		free(xml_str);
-		return ERROR_MEMORY_SHORTAGE;
-	}
-
-	move_current(&ws->operation_list,mov_first);
-	
-	alloc_size = INIT_CHOP;
-
-	do{
-		if((st = ADT_List_get_node(&ws->operation_list,(void*)str))!= OK){
-			free(str);
-			free(xml_str);
-			free(response);
-			return st;
-		}
-		modify(xml_str,str,OPERATION);
-		alloc_size += strlen(xml_str);
-		
-		if((response = (char*) realloc(response,alloc_size)) == NULL){
-			free(str);
-			free(xml_str);
-			free(response);
-			return ERROR_MEMORY_SHORTAGE; 
-		}
-		strcat(response,xml_str);	
-	}while(move_current(&ws->operation_list,mov_next) == OK);
+	modify(response,ADTWS_Op_get_operation_time(ws->operation_t),TIME); 
 
 	if((st = ADTWS_Op_set_response(&ws->operation_t,response))!= OK){
-		free(str);
-		free(xml_str);
-		free(response);
 		return st;
 	}
 
-	free(str);
-	free(xml_str);
-	printf("ok?\n");
 	return OK;
-}*/
-	str = (char*) malloc(30);
+	
+}
 
-    xml_str = (char*) malloc(strlen(str)+FORMAT_CHOP+strlen(OPERATION));
 
-    response = (char*) malloc(INIT_CHOP);
+int set_max_id_client(ADTWS* ws){
 
-    move_current(&ws->operation_list,mov_first);
-   
-    alloc_size = INIT_CHOP;
+	client_t max_client, new_client;
+	char *response,aux[STR_LEN];
+	int st;
+	modify_string_t modify;
 
-    do{
-        ADT_List_get_node(&ws->operation_list,(void*)str);
-        modify(xml_str,str,OPERATION);
-        alloc_size += strlen(xml_str);
-        printf("ok\n");
-        response = (char*) realloc(response,alloc_size);
-        strcat(response,xml_str);   
-    }while(move_current(&ws->operation_list,mov_next) == OK);
+	
+	if(ws == NULL){
+		return ERROR_NULL_POINTER;
+	}
 
-    ADTWS_Op_set_response(&ws->operation_t,response);
+	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
+		modify = (modify_string_t)strtoxml;
+	}else{
+		modify = (modify_string_t)strtojason;
+	} 
+	
+	straight_list_move(&ws->client_list,straight_list_first);
+	
+	do{
+		straight_list_get(&ws->client_list,(void*)&max_client);
+			
+	}while(straight_list_move(&ws->client_list,straight_list_next) == TRUE);
 
-    return OK;
+	new_client.client_id = max_client.client_id + 1;
+
+	if(straight_list_insert(&ws->client_list,straight_list_next,(void*)(&new_client)) != TRUE){
+		return ERROR_MEMORY_SHORTAGE;
+	}	
+	
+	sprintf(aux,"%d",new_client.client_id);
+
+	if((response = (char*) malloc(strlen(aux) + FORMAT_CHOP +1)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	modify(response,aux,CLIENT_ID);
+
+	if((st = ADTWS_Op_set_response(&ws->operation_t,response))!= OK){
+		free(response);
+		return st;
+	}
+	
+	free(response);
+
+	return OK;
 }
 
 
@@ -365,6 +575,8 @@ int log_operation(ADTWS ws){
 		return ERROR_OPENING_FILE;
 	}
 
+	printf("this is to be printed :%s\n",ADTWS_Op_get_response(ws.operation_t));
+
 	fprintf(fp,"%s;%s;\n%s;\n%s\n",ADTWS_Op_get_operation_time(ws.operation_t),ADTWS_Op_get_operation(ws.operation_t),ADTWS_Op_get_request(ws.operation_t),ADTWS_Op_get_response(ws.operation_t));
 
 	if(fclose(fp) == EOF){
@@ -373,4 +585,3 @@ int log_operation(ADTWS ws){
 
 	return OK;
 }
-

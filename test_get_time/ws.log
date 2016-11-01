@@ -1,0 +1,3 @@
+31/10/2016 10:00:14;validate_operation;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
+<time>31/10/2016 10:00:14</time>

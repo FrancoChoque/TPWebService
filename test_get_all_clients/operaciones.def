@@ -1,0 +1,8 @@
+get_time
+get_max_id_client
+set_max_id_client
+get_client_by_id
+set_client_by_id
+get_all_clients
+get_all_operations
+validate_operation

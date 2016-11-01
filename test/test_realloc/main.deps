@@ -1,0 +1,5 @@
+main.o main.deps : main.c errors.h utils.h
+
+errors.h:
+
+utils.h:
