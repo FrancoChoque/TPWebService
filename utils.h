@@ -10,6 +10,8 @@
 #define INIT_CHOP 1
 #define STR_LEN 30
 
+typedef void (*print_string_t)(char*, const char*, const char*);
+
 
 int concat_str_array(int, const char**, char**);
 char* strdup(const char*);

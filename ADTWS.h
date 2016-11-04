@@ -9,7 +9,7 @@
 #include "utils.h"
 #include "straight_list.h"
 #include "ADT_Client.h"
-#include "ADT_Queue.h"
+#include "queue.h"
 #include "ADTWS_Op.h"
 
 #define OPERATION_PATH_POSITION 0
@@ -28,7 +28,7 @@ typedef struct{
 }ADTWS;
 
 
-typedef int(*operate_t)(ADTWS*);
+typedef int(*operate_t)(ADTWS*, const char*, const char*, char**);
 
 
 int ADTWS_create(ADTWS*, ADTWS_Op);
@@ -38,12 +38,15 @@ int ADTWS_consume(ADTWS*);
 int ADTWS_set_operation(ADTWS*, ADTWS_Op);
 int ADTWS_set_config_file(ADTWS*);
 
-
-typedef void (*modify_string_t)(char*, const char*, const char*);
-typedef char* (*client_to_string_t)(client_t);
-
-int get_file_path(char**, const char*, int);
-
-
 int log_operation(ADTWS);
+
+
+int get_all_operations(ADTWS*, const char*, const char*, char**);
+int get_all_clients(ADTWS*, const char*, const char*, char**);
+int get_time(ADTWS*, const char*, const char*, char**);
+int set_max_id_client(ADTWS*, const char*, const char*, char**);
+int get_max_id_client(ADTWS*, const char*, const char*, char**);
+int get_client_by_id(ADTWS*, const char*, const char*, char**);
+int set_client_by_id(ADTWS*, const char*, const char*, char**);
+int validate_operation(ADTWS*, const char*, const char*, char**);
 #endif

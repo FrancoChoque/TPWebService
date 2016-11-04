@@ -44,37 +44,6 @@ int compare_operation(const void* a, const void* b){
 
 /*
 
-int get_time(ADTWS* ws){
-
-	time_t time_stamp;
-	struct tm* display;
-	char time_string[STR_LEN], *response;
-	int st;
-	
-
-	if(ws == NULL){
-		return ERROR_NULL_POINTER;
-	}
-
-	if(time(&time_stamp) == -1){
-		return ERROR_SYS_TIME;
-	}
-	
-	if((display = localtime(&time_stamp)) == NULL){
-		return ERROR_SYS_TIME;
-	}
-	
-	strftime(time_string,STR_LEN,"%d/%m/%Y %H:%M:%S",display);
-	
-	print_format(response,time_string); 
-
-	if((st = ADTWS_Op_set_response(ADTWS->operation,response))!= OK){
-		return st;
-	}
-
-	return OK;
-	
-}
 
 
 

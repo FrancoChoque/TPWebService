@@ -52,7 +52,10 @@ int modify_client_date(void*,void*);
 
 char* print_client_as_jason(client_t);
 char* print_client_as_xml(client_t);
-
+int xmltoclient(const char*, void*);
+int jsontoclient(const char*, void*);
+typedef char* (*client_to_string_t)(client_t);
+typedef int (*parser_t) (const char*, void*);
 
 
 #endif

@@ -2,6 +2,7 @@
 
 void log_error(int);
 void show_usage(void);
+extern const char* error_msg[];
 
 int main(int argc, char* argv[]){
 
@@ -11,6 +12,7 @@ int main(int argc, char* argv[]){
 	ADTWS web_service;
 
 	
+
 	if((st = validate_arguments(argc,argv))!= OK){
 		log_error(st);
 		show_usage();
@@ -32,11 +34,9 @@ int main(int argc, char* argv[]){
 	
 	if((st = execute_operation(&web_service))!= OK){
 		log_error(st);
-		ADTWS_Op_destroy(&operation);
 		ADTWS_destroy(&web_service);
 		return EXIT_FAILURE;
 	}
-
 
 	ADTWS_destroy(&web_service);
 	
@@ -74,8 +74,7 @@ int execute_operation(ADTWS* ws){
 	}
 
 	if((st = ADTWS_consume(ws))!= OK){
-		log_operation(*ws);
-		return ERROR_INVALID_OPERATION;
+		return st;
 	}
 	
 	log_operation(*ws);
@@ -87,11 +86,14 @@ int execute_operation(ADTWS* ws){
 
 void log_error(int st){
 
+	fprintf(stderr,"%s\n",error_msg[st]);
 	
 	return;
 }
 
 void show_usage(void){
+
+	fprintf(stderr, "Usage: ./tp -X <METHOD> -H <TYPE> <URL> -d <DATA>\n");
 
 	return;
 }

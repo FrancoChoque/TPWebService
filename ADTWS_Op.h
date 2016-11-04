@@ -19,7 +19,7 @@
 #define URL_DELIM_COLON ':'
 
 #define URL_FIELD_ENCRYPTION 1
-#define URL_FIELD_DOMAIN 2
+#define URL_FIELD_HOST 2
 #define URL_FIELD_PORT 3
 #define URL_FIELD_OPERATION 4
 #define URL_FIELD_GET_DATA 5
@@ -30,6 +30,7 @@
 #define REQUEST_FLAG_CONTENT_TYPE "-H"
 #define REQUEST_FLAG_DATA "-d"
 #define XML_OPERATION "<Operation>"
+#define XML_CLIENT "<Client>"
 
 
 typedef struct{
@@ -60,14 +61,18 @@ char* ADTWS_Op_get_format(ADTWS_Op);
 char* ADTWS_Op_get_response(ADTWS_Op);
 
 
-int ADTWS_Op_get_url(char**, ADTWS_Op);
-int ADTWS_Op_get_data(char**, ADTWS_Op);
+
+
+int ADTWS_Op_get_data(char**, const char*, ADTWS_Op);
 int ADTWS_Op_get_method(char**, ADTWS_Op);
-int ADTWS_Op_get_domain(char**, ADTWS_Op);
+int ADTWS_Op_get_host(char**, ADTWS_Op);
+
 
 int ADTWS_Op_copy(ADTWS_Op*, ADTWS_Op);
 
 
 void strtoxml(char*, const char*, const char*);
 void strtojason(char*, const char*, const char*);
+
+int get_local_time(char**);
 #endif

@@ -7,7 +7,7 @@
 #include "ADTWS_Op.h"
 #include "ADTWS.h"
 #include "straight_list.h"
-#include "ADT_Queue.h"
+#include "queue.h"
 #include "errors.h"
 #include "utils.h"
 #include "operation.h"

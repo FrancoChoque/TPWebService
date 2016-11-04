@@ -1,11 +1,13 @@
 #include "ADTWS_Op.h"
 #include <time.h>
 
+
+int get_url(char**, const char*);
 int parse_url(char**, const char*, int);
 int parse_request(char**, const char*, char*);
 void operation_to_xml(char*, const char*);
 void operation_to_jason(char*,const char*);
-int get_local_time(char**);
+
 
 
 
@@ -22,21 +24,24 @@ int ADTWS_Op_create(ADTWS_Op* op, int argc, const char** argv){
 	}	
 	
 	if((st = ADTWS_Op_set_operation(op))!= OK){
-		ADTWS_Op_destroy(op);
+		free(op->request);
 		return st;
 	}
 	
 	if((st = ADTWS_Op_set_format(op))!= OK){
-		ADTWS_Op_destroy(op);
+		free(op->request);
+		free(op->operation);
 		return st;
 	}	
 
 	if((st = ADTWS_Op_set_operation_time(op))!= OK){
-		ADTWS_Op_destroy(op);
+		free(op->request);
+		free(op->operation);
+		free(op->format);
 		return st;
 	}
 
-	op->response = NULL;
+	op->response = '\0';
 
 	return OK; 
 
@@ -53,29 +58,25 @@ int ADTWS_Op_destroy(ADTWS_Op* op){
 		return ERROR_NULL_POINTER;
 	}
 
-	if(op->request != NULL){
+	
+	if(op->request != '\0'){
 		free(op->request);
 		op->request = NULL;
 	}
 	
-	if(op->response != NULL){
-		free(op->response);
-		op->response = NULL;
-	}
-	
-	if(op->operation != NULL){
-		free(op->operation);
-		op->operation = NULL;
-	}
-	
-	if(op->operation_time != NULL){
+	if(op->operation_time != '\0'){
 		free(op->operation_time);
 		op->operation_time = NULL;
 	}
 	
-	if(op->format != NULL){
+	if(op->format != '\0'){
 		free(op->format);
 		op->format = NULL;
+	}
+
+	if(op->response != '\0'){
+		free(op->response);
+		op->response = NULL;
 	}
 	
 	return OK;
@@ -111,14 +112,19 @@ int ADTWS_Op_set_operation(ADTWS_Op* op){
 	if(op == NULL){
 		return ERROR_NULL_POINTER;
 	}
-
-	if((st = ADTWS_Op_get_url(&url,*op))!= OK){
+	
+	if((st = get_url(&url,op->request))!= OK){
 		return st;
 	}
 	
 	if((st = parse_url(&str,url,URL_FIELD_OPERATION))!= OK){
 		free(url);
 		return st;
+	}
+
+	if(str == NULL){
+		free(url);
+		return ERROR_OPERATION_NOT_FOUND;
 	}
 
 	if((op->operation = strdup(str)) == NULL){
@@ -146,6 +152,10 @@ int ADTWS_Op_set_format(ADTWS_Op* op){
 
 	if((st = parse_request(&str,op->request,REQUEST_FLAG_CONTENT_TYPE))!= OK){
 		return st;
+	}
+
+	if(str == NULL){
+		return ERROR_CONTENT_TYPE_HEADER_NOT_FOUND;
 	}
 	
 	if((aux = strstr(str,TYPE_JASON)) == NULL){
@@ -239,66 +249,133 @@ char* ADTWS_Op_get_response(ADTWS_Op op){
 }
 
 
-
 int ADTWS_Op_get_method(char** method, ADTWS_Op op){
 
 	int st;
+	char* aux;
 
-	if((st = parse_request(method, op.request, REQUEST_FLAG_METHOD))!= OK){
-		return st;
-	}
-
-	if(*method == NULL){
-		*method = strdup(METHOD_DEFAULT);
-	}
-
-	return OK;
-}
-
-
-int ADTWS_Op_get_data(char** data, ADTWS_Op op){
-
-   	char* str;
-
-   	if((str = strstr(op.response, REQUEST_FLAG_DATA)) == NULL){
-   		return ERROR_INVALID_DATA;
+	if((st = parse_request(&aux,op.request,REQUEST_FLAG_METHOD))!= OK){
+   		return st;
+   	}
+   	
+   	if(aux == NULL){	/*Si no encuentra la bandera, el método por defecto es GET*/
+   		if((*method = strdup(METHOD_GET)) == NULL){
+   			free(aux);
+   			return ERROR_MEMORY_SHORTAGE;
+   		}
+   		return OK;
    	}
 
-   	if((*data = strdup(str)) == NULL){
+   	if((*method = strdup(aux)) == NULL){
+   		free(aux);
    		return ERROR_MEMORY_SHORTAGE;
    	}
+   	
+   	free(aux);
 
    	return OK;
 }
 
 
-int ADTWS_Op_get_url(char** url, ADTWS_Op op){
 
-	char* temp;
 
-	temp = strstr(op.request,"http");
+int ADTWS_Op_get_data(char** data, const char* method, ADTWS_Op op){
 
-	if((*url = strdup(temp)) == NULL){
+   	
+   	int st;
+   	char *aux, *url;
+   	
+
+
+   	if(!strcmp(method,METHOD_GET)){ 
+   		   	
+   		if((st = get_url(&url,op.request))!= OK){
+   			return st;
+   		}
+		if((st = parse_url(&aux,url,URL_FIELD_GET_DATA))!= OK){
+   			free(url);
+   			return st;
+   		}
+		if(aux == NULL){
+   			free(url);
+   			return ERROR_DATA_NOT_FOUND;
+		}
+		if((*data = strdup(aux)) == NULL){
+   			free(url);
+   			return ERROR_MEMORY_SHORTAGE;
+   		}
+   		free(url);
+   		return OK;	
+   	} 	
+
+	if(!strcmp(method,METHOD_POST)){
+		
+		if((st = parse_request(&aux,op.request,"-d"))!= OK){
+   			return st;
+   		}
+   		if(aux == NULL){
+   			return ERROR_DATA_NOT_FOUND;
+   		}
+   		if((*data = strdup(aux)) == NULL){
+   			return ERROR_MEMORY_SHORTAGE;
+   		}
+   		return OK;
+   	}
+   	
+   	return ERROR_INVALID_METHOD;
+}
+
+
+
+int get_url(char** url, const char* request){
+
+	char *aux2,*temp, *aux;
+
+	
+	if((aux2 = strstr(request,"http")) == NULL){
+		return ERROR_URL_NOT_FOUND;
+	}
+
+	if((temp = strdup(aux2)) == NULL){
 		return ERROR_MEMORY_SHORTAGE;
 	}
+
+	aux2 = NULL;
+
+	aux = strtok(temp," ");
+
+	if((*url = strdup(aux)) == NULL){
+		free(temp);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	free(temp);
 
 	return OK;
 }
 
 
-int ADTWS_Op_get_domain(char** domain, ADTWS_Op op){
+
+int ADTWS_Op_get_host(char** host, ADTWS_Op op){
 
 	char* aux;
 	int st;
 
-	if((st = ADTWS_Op_get_url(&aux,op))!= OK){
+	if((st = get_url(&aux,op.request))!= OK){
 		return st;
 	}
 
-	if((st = parse_url(domain,aux,URL_FIELD_DOMAIN))!= OK){
+	if((st = parse_url(host,aux,URL_FIELD_HOST))!= OK){
 		free(aux);
 		return st;
 	}
+
+	if(host == NULL){
+		free(aux);
+		return ERROR_HOST_NOT_FOUND;
+	}
+
+	free(aux);
 
 	return OK;
 }
@@ -330,6 +407,13 @@ int parse_url(char** str, const char* url, int field){
 	}
 	
 	for(aux = temp, i = 0; i < field && (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++);
+
+	if(aux2 == NULL){
+		*str = NULL;
+		free(temp);
+		temp = NULL;
+		return OK;
+	}
 
 	if((*str = strdup(aux2)) == NULL){
 		free(temp);
@@ -367,15 +451,17 @@ int parse_request(char** str, const char* request, char* flag){
 	
 	for(aux = temp; ((aux2 = strtok(aux,delims))!= NULL) && (strcmp(aux2,flag)); aux = NULL);
 	
-	if(strcmp(aux2,flag)){
+	if(aux2 == NULL){
 		free(temp);
 		*str = NULL;
 		return OK;
 	}
 
-	aux2 = strtok(aux,delims);
+	if((aux2 = strtok(aux,delims)) == NULL){
+		free(temp);
+		return ERROR_MISSING_DATA;
+	}
 	
-	aux = NULL;
 	
 	if((*str = strdup(aux2)) == NULL){
 		free(temp);
@@ -438,3 +524,10 @@ int get_local_time(char** str_time){
 	return OK;
 	
 }
+
+
+
+
+
+ 
+

@@ -70,6 +70,7 @@ char* print_client_as_xml(client_t client){
 }
 
 
+
 char* print_client_as_jason(client_t client){
 
 	
@@ -88,3 +89,143 @@ char* print_client_as_jason(client_t client){
 	return str;
 }
 
+
+
+int xmltoclient(const char* xml , void* data){
+
+	client_t* client;
+	char *str, *aux, *aux2, *temp;
+	char delims[] = {'<','>','/','\0'};
+	char delims_date[] = {'<','>','\0'};
+	
+	client = (client_t*) data;
+
+
+	if((str = strdup(xml)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+	
+	/*saco el <?xml="1.0"encoding...>*/
+	aux = str; 	
+	aux2 = strtok(aux,delims);
+	aux = NULL;
+	/*..............................>*/
+
+	while((aux2 = strtok(aux,delims))!= NULL){
+		
+		if(!strcmp(aux2,CLIENT_ID)){
+			aux2 = strtok(aux,delims);
+			client->client_id = (int) strtoul(aux2,&temp,10);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_ID)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+		if(!strcmp(aux2,CLIENT_NAME)){
+			aux2 = strtok(aux,delims);
+			strncpy(client->name,aux2,STR_LEN-1);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_NAME)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+		
+		if(!strcmp(aux2,CLIENT_SURNAME)){
+			aux2 = strtok(aux,delims);
+			strncpy(client->surname,aux2,STR_LEN-1);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_SURNAME)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+		
+		if(!strcmp(aux2,CLIENT_TELEPHONE)){
+			aux2 = strtok(aux,delims);
+			strncpy(client->telephone,aux2,STR_LEN-1);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_TELEPHONE)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+		if(!strcmp(aux2,CLIENT_MAIL)){
+			aux2 = strtok(aux,delims);
+			strncpy(client->mail,aux2,STR_LEN-1);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_MAIL)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+		if(!strcmp(aux2,CLIENT_DATE)){
+			aux2 = strtok(aux,delims_date);
+			strncpy(client->date,aux2,STR_LEN-1);
+			if(strcmp((aux2 = strtok(aux,delims)),CLIENT_DATE)){
+				free(str);
+				return ERROR_INVALID_XML;
+			}
+			continue;
+		}
+	}
+	
+	free(str);
+
+	return OK;
+}
+
+
+int jsontoclient (const char* str, void* data){
+
+    char *json, *aux, *aux2,*temp;
+    char delims[] = {'{','}','"',':','\0'};
+    client_t* client;
+
+    client = (client_t*) data;
+
+    if((json = strdup(str)) == NULL){
+    	return ERROR_MEMORY_SHORTAGE;
+    }
+
+    for(aux = json; (aux2 = strtok(aux,delims))!= NULL;){
+    	
+    	aux = NULL;
+
+        if(!strcmp(aux2,CLIENT_ID)){
+            aux2 = strtok(aux,delims);
+            client->client_id = (int) strtoul(aux2,&temp,10);
+            continue;
+        }
+        if(!strcmp(aux2,CLIENT_NAME)){
+            aux2 = strtok(aux,delims);
+            strncpy(client->name,aux2,STR_LEN-1);
+            continue;
+        }
+        if(!strcmp(aux2,CLIENT_SURNAME)){
+            aux2 = strtok(aux,delims);
+            strncpy(client->surname,aux2,STR_LEN-1);
+            continue;
+        }
+        if(!strcmp(aux2,CLIENT_TELEPHONE)){
+            aux2 = strtok(aux,delims);
+            strncpy(client->telephone,aux2,STR_LEN-1);
+            continue;
+        }
+        if(!strcmp(aux2,CLIENT_MAIL)){
+            aux2 = strtok(aux,delims);
+            strncpy(client->mail,aux2,STR_LEN-1);
+            continue;
+        }
+        if(!strcmp(aux2,CLIENT_DATE)){
+            aux2 = strtok(aux,delims);
+            strncpy(client->date,aux2,STR_LEN-1);
+            continue;
+        }
+    }
+
+    free(json);
+
+    return OK;
+}

@@ -1,111 +1,366 @@
-31/10/2016 10:00:14;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<time>31/10/2016 10:00:14</time>
-31/10/2016 11:32:54;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<time>31/10/2016 11:32:54</time>
-31/10/2016 11:33:29;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>2</id>
-31/10/2016 11:37:51;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>4</id>
-31/10/2016 11:40:08;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>4</id>
-31/10/2016 11:42:46;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>4</id>
-31/10/2016 11:42:58;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>4</id>
-01/11/2016 00:35:15;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<id>4</id>
-01/11/2016 00:35:29;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<id>4</id>
-01/11/2016 11:28:31;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<id>4</id>
-01/11/2016 11:33:10;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<time>01/11/2016 11:33:10</time>
-01/11/2016 11:33:18;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<?xml version="1.0"encoding="UTF-8"?><Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
-01/11/2016 11:49:46;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<time>01/11/2016 11:49:46</time>
-01/11/2016 12:02:10;get_time;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_time;
-<time>01/11/2016 12:02:10</time>
-01/11/2016 12:02:19;get_all_clients;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
-<?xml version="1.0"encoding="UTF-8"?><Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client><?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
-01/11/2016 12:02:27;get_all_operations;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 12:16:53;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<true>validate_operation</true>
-01/11/2016 12:17:01;validate_operation;
-./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
-{"true": "validate_operation"}
-01/11/2016 12:17:24;get_all_clients;
-./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
-{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
-01/11/2016 12:21:07;get_all_clients;
-./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
-{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
-01/11/2016 12:21:12;get_all_operations;
-./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
-{"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
-01/11/2016 12:21:22;get_all_operations;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 12:25:18;get_all_operations;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 12:27:05;get_all_operations;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 13:10:06;get_all_operations;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 13:10:41;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<valid>false</valid>
-01/11/2016 13:11:41;validate_operation;
-./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/validate_operation;
-<valid>true</valid>
-01/11/2016 13:11:51;validate_operation;
-./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
-{"valid": "true"}
-01/11/2016 13:12:29;validate_operation;
-./tp -H Accept:application/jason http://SERVERTP1GRUPAL:8888/validate_operation;
-{"valid": "true"}
-01/11/2016 13:12:37;get_all_clients;
-./tp -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
-{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
-01/11/2016 13:13:05;get_all_clients;
-./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
-{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
-01/11/2016 13:13:13;get_all_operations;
+01/11/2016 16:53:02;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 16:53:58;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 16:54:59;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 16:56:17;get_all_operations;
 ./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
 {"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
-01/11/2016 13:13:21;get_all_operations;
+01/11/2016 16:57:19;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>q
+01/11/2016 16:57:42;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 16:58:24;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 16:58:53;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:02:45;get_all_operations;
 ./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
 <operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 14:02:32;get_all_operations;
+01/11/2016 17:04:15;get_all_operations;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
+{"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
+01/11/2016 17:04:31;get_all_operations;
 ./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 14:02:48;get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:07:37;get_all_operations;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_operations;
+{"operation": "get_time"}{"operation": "get_max_id_client"}{"operation": "set_max_id_client"}{"operation": "get_client_by_id"}{"operation": "set_client_by_id"}{"operation": "get_all_clients"}{"operation": "get_all_operations"}{"operation": "validate_operation"}
+01/11/2016 17:07:43;get_all_operations;
 ./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 14:16:39;get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:24:53;get_all_operations;
 ./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
-<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
-01/11/2016 14:17:16;get_all_clients;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:25:02;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:25:43;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:25:59;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:26:15;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:26:53;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:27:52;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:29:27;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:29:48;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:30:13;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/sa;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:30:18;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:31:18;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:31:59;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/1;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:32:06;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/fes;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:32:28;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/fes;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:33:12;get_all_operations;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations/fes;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:35:45;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:36:43;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:37:01;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:38:02;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:38:32;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:38:45;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:39:31;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:39:39;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:42:02;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:42:13;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:42:25;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:42:35;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 17:42:55;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 21:00:05;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations -d dasfkka ss;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 23:30:16;get_all_operations;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_operations -d dasfkka ss;
+?xml version="1.0"encoding="UTF-8"?<operation>get_time</operation><operation>get_max_id_client</operation><operation>set_max_id_client</operation><operation>get_client_by_id</operation><operation>set_client_by_id</operation><operation>get_all_clients</operation><operation>get_all_operations</operation><operation>validate_operation</operation>
+01/11/2016 23:51:25;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+01/11/2016 23:52:37;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+01/11/2016 23:53:27;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+01/11/2016 23:54:37;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+02/11/2016 00:02:46;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+02/11/2016 00:03:49;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client -d dasfkka ss;
+(null)
+02/11/2016 00:04:17;get_time;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_time;
+<time>02/11/2016 00:04:17</time>
+02/11/2016 00:04:37;get_time;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_time;
+{"time": "02/11/2016 00:04:37"}
+02/11/2016 15:56:16;get_time;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_time;
+{"time": "02/11/2016 15:56:16"}
+02/11/2016 15:56:35;get_time;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_time;
+{"time": "02/11/2016 15:56:35"}
+02/11/2016 16:55:44;get_max_id_client;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_max_id_client;
+<Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+02/11/2016 17:04:07;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client;
+<Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+02/11/2016 17:05:07;get_max_id_client;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_max_id_client;
+<Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+02/11/2016 17:06:48;get_max_id_client;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_max_id_client;
+{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+02/11/2016 17:06:56;get_max_id_client;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_max_id_client;
+<Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+02/11/2016 17:18:17;get_client_by_id;
+./tp -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:19:39;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:19:59;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:21:06;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:21:25;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:21:27;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:21:52;get_client_by_id;
+./tp -X GET -H Accept:application/xml/1 http://SERVERTP1GRUPAL:8888/get_client_by_id;
+(null)
+02/11/2016 17:22:11;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 17:22:36;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 17:22:49;get_client_by_id;
+./tp -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 18:10:12;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 18:10:55;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 18:11:37;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+(null)
+02/11/2016 18:13:29;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/1;
+<Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client>
+02/11/2016 18:13:34;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/2;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+02/11/2016 18:13:38;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/3;
+<Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+03/11/2016 00:46:33;get_all_clients;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_all_clients;
+?xml version="1.0"encoding="UTF-8"?<Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client><Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+03/11/2016 00:46:44;get_all_clients;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+03/11/2016 18:00:20;get_all_clients;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
+{"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+03/11/2016 18:00:42;get_client_by_id;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id/2;
+{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}
+03/11/2016 18:00:51;get_client_by_id;
+./tp -X GET -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id/2;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+03/11/2016 18:01:53;get_client_by_id;
+./tp -X GET -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:02:52;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:04:39;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:05:33;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:08:23;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:08:42;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:09:01;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:09:40;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:09:55;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+(null)
+03/11/2016 18:10:25;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}
+03/11/2016 18:10:47;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:2};
+{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}
+03/11/2016 18:10:55;get_client_by_id;
+./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_client_by_id -d {id:3};
+{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+03/11/2016 18:29:32;get_all_clients;
 ./tp -X POST -H Accept:application/jason http://SERVERTP1GRUPAL:8888/get_all_clients;
 {"id":"1","Name":"JUAN","Surname":"PEREZ","Telephone":"4444-4444","Mail":"juan@perez.com.ar","Time":"19/09/2016 19:04:33"}{"id":"2","Name":"JUANA","Surname":"GOMEZ","Telephone":"5555-5555","Mail":"juana@gomez.com.ar","Time":"16/09/2016 10:24:52"}{"id":"3","Name":"JUANI","Surname":"LOPEZ","Telephone":"6666-6666","Mail":"juani@lopez.com.ar","Time":"23/09/2016 09:20:19"}
+04/11/2016 08:37:05;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id <id>1</id>;
+(null)
+04/11/2016 08:37:34;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id <client><id>1</id></client>;
+(null)
+04/11/2016 08:38:11;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id <id>1</id>;
+(null)
+04/11/2016 08:39:22;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id <id>1</id>;
+(null)
+04/11/2016 08:40:40;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <id>1</id>;
+(null)
+04/11/2016 08:41:21;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <id>1</id>;
+(null)
+04/11/2016 08:43:57;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <id>1</id>;
+(null)
+04/11/2016 08:45:19;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <id>1</id>;
+<Client><id>1</id><Name>JUAN</Name><Surname>PEREZ</Surname><Telephone>4444-4444</Telephone><Mail>juan@perez.com.ar</Mail><Time>19/09/2016 19:04:33</Time></Client>
+04/11/2016 08:45:30;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <id>2</id>;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+04/11/2016 08:49:56;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>2</id>;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+04/11/2016 08:50:38;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>2</id>;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+04/11/2016 08:51:03;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>2</id>;
+<Client><id>2</id><Name>JUANA</Name><Surname>GOMEZ</Surname><Telephone>5555-5555</Telephone><Mail>juana@gomez.com.ar</Mail><Time>16/09/2016 10:24:52</Time></Client>
+04/11/2016 08:56:03;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+<?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+04/11/2016 09:30:40;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+<?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
+04/11/2016 09:32:10;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:33:26;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:35:32;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:36:07;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:36:48;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:36:51;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:38:26;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:38:47;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:38:57;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:39:56;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:41:02;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:41:22;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:43:56;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 09:44:48;get_client_by_id;
+./tp -X -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+(null)
+04/11/2016 16:36:24;get_client_by_id;
+./tp -X POST -H Accept:application/xml http://SERVERTP1GRUPAL:8888/get_client_by_id -d <?xmlversion="1.0"encoding="UT8-8"?><Client><id>3</id>;
+<?xml version="1.0"encoding="UTF-8"?><Client><id>3</id><Name>JUANI</Name><Surname>LOPEZ</Surname><Telephone>6666-6666</Telephone><Mail>juani@lopez.com.ar</Mail><Time>23/09/2016 09:20:19</Time></Client>
