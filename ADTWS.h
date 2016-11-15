@@ -40,6 +40,9 @@ int ADTWS_set_config_file(ADTWS*);
 
 int log_operation(ADTWS);
 
+int parsejson(const char *,client_t*);
+int parsexml(const char *,client_t*);
+
 
 int get_all_operations(ADTWS*, const char*, const char*, char**);
 int get_all_clients(ADTWS*, const char*, const char*, char**);

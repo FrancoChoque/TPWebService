@@ -526,22 +526,70 @@ int get_max_id_client(ADTWS* ws, const char* format, const char* method, char** 
 
 
 
-int set_client_by_id(ADTWS* ws, const char* format, const char* method, char** response){
+int set_client_by_id(ADTWS* ws, const char* format, const char* method, char** final_response){
+
+	client_t new_client,old_client,max_client;
+	char *response,*request;
+	client_to_string_t print;
+	parser_t parse;
+
+	
+	if(ws == NULL || method == NULL || method == NULL || response == NULL){
+		return ERROR_NULL_POINTER;
+	}
+
+	if((request = strdup(ws->operation_t.request)) == NULL){
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	if(!strcmp(format,TYPE_XML)){
+		if(parsexml(request,&new_client)!=TRUE)
+			return ERROR_MEMORY_SHORTAGE;
+		print = (client_to_string_t)print_client_as_xml;
+		parse = (parser_t)xmltoclient;
+	}else{
+		if(parsejson(request,&new_client)!=TRUE)
+			return ERROR_MEMORY_SHORTAGE;
+		print = (client_to_string_t)print_client_as_jason;
+		parse = (parser_t)jsontoclient;
+	} 
+	
+	straight_list_move(&ws->client_list,straight_list_first);
+	
+	do{
+		straight_list_get(&ws->client_list,(void*)&old_client);
+			
+	}while(straight_list_move(&ws->client_list,straight_list_next) == TRUE && new_client.client_id != old_client.client_id);
+
+	if(new_client.client_id == old_client.client_id){
+		if(straight_list_update(&ws->client_list,(void*)&new_client) != TRUE)
+			return ERROR_MEMORY_SHORTAGE;
+		return OK;		
+	}
+	
+	
+	while(straight_list_move(&ws->client_list,straight_list_next) == TRUE);
+		straight_list_get(&ws->client_list,(void*)&max_client);
 	
 
-/*
-	if(!strcmp(ADTWS_Op_get_format(ws->operation_t),TYPE_XML)){
-		parse = (parser_t)parse_xml;
-	}else{
-		parse = (parser_t)parse_json;
-	} 	
+	new_client.client_id = max_client.client_id + 1;
 
-	ADTWS_Op_get_data(&data,ws->operation_t);
+	if(straight_list_insert(&ws->client_list,straight_list_next,(void*)(&new_client)) != TRUE){
+		return ERROR_MEMORY_SHORTAGE;
+	}	
+	
+	response= parse(new_client);
 
-	parse(data);
-	*/	
-	return 0;
+	if((*final_response = strdup(response)) == NULL){
+		free(response);
+		return ERROR_MEMORY_SHORTAGE;
+	}
+
+	free(response);
+
+	return OK;
 }
+
 
 
 
@@ -846,3 +894,107 @@ int log_operation(ADTWS ws){
 
 
 /*----------------------------------------------------*/
+
+
+
+
+/*-----------------PARSERS------------------*/
+
+
+int parsexml(const char * str,client_t* cl){
+
+    int i;
+    char *xml, *aux, *aux2,temp[1]="\0";
+    char delims[] = {'<','>','\0',' '};
+
+    xml = strdup(str);
+
+    if(!xml)
+	return FALSE;
+
+    for(aux = xml, i = 0; (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++){
+        if(!strcmp(aux2,CLIENT_ID)){
+            aux2 = strtok(aux,delims);
+            cl->client_id=atoi(aux2);
+        }
+        if(!strcmp(aux2,CLIENT_NAME)){
+            aux2 = strtok(aux,delims);
+            strcpy(cl->name,aux2);
+	    strcat(cl->name,temp);
+        }
+        if(!strcmp(aux2,CLIENT_SURNAME)){
+            aux2 = strtok(aux,delims);
+            strcpy(cl->surname,aux2);
+	    strcat(cl->surname,temp);
+        }
+        if(!strcmp(aux2,CLIENT_TELEPHONE)){
+            aux2 = strtok(aux,delims);
+            strcpy(cl->telephone,aux2);
+	    strcat(cl->telephone,temp);
+        }
+        if(!strcmp(aux2,CLIENT_MAIL)){
+            aux2 = strtok(aux,delims);
+            strcpy(cl->mail,aux2);
+	    strcat(cl->mail,temp);
+        }
+        if(!strcmp(aux2,CLIENT_DATE)){
+            aux2 = strtok(aux,delims);
+            strcpy(cl->date,aux2);
+	    strcat(cl->date,temp);
+        }
+    }
+    return TRUE;  
+}
+
+int parsejson(const char* str,client_t * cl){
+
+    int i;
+    char *json, *aux, *aux2, temp[1]="\0";
+    char delims[] = {'"','\0',' '};
+
+    json = strdup(str);
+
+
+    if(!json)
+	return FALSE;
+    
+for(aux = json, i = 0; (aux2 = strtok(aux,delims))!= NULL; aux = NULL, i++){
+        if(!strcmp(aux2,CLIENT_ID)){
+            aux2 = strtok(aux,delims);
+            aux2 = strtok(aux,delims);
+	    cl->client_id=atoi(aux2);
+        }
+        if(!strcmp(aux2,CLIENT_NAME)){
+            aux2 = strtok(aux,delims);
+            aux2 = strtok(aux,delims);
+	    strcpy(cl->name,aux2);
+	    strcat(cl->name,temp);
+        }
+        if(!strcmp(aux2,CLIENT_SURNAME)){
+            aux2 = strtok(aux,delims);
+	    aux2 = strtok(aux,delims);
+            strcpy(cl->surname,aux2);
+	    strcat(cl->surname,temp);
+        }
+        if(!strcmp(aux2,CLIENT_TELEPHONE)){
+            aux2 = strtok(aux,delims);
+            aux2 = strtok(aux,delims);            
+	    strcpy(cl->telephone,aux2);
+	    strcat(cl->telephone,temp);        
+	}
+        if(!strcmp(aux2,CLIENT_MAIL)){
+            aux2 = strtok(aux,delims);
+	    aux2 = strtok(aux,delims);        
+	    strcpy(cl->mail,aux2);
+	    strcat(cl->mail,temp);
+        }
+        if(!strcmp(aux2,CLIENT_DATE)){
+            aux2 = strtok(aux,delims);
+	    aux2 = strtok(aux,delims);
+            strcpy(cl->date,aux2);
+	    strcat(cl->date,temp);
+        }
+    }
+
+    return TRUE;
+}
